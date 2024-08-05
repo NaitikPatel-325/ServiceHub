@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
     fullName:{
@@ -27,12 +28,13 @@ const userSchema = new mongoose.Schema({
     },
     phone_number: {
         type: String,
-        maxlength: 15
+        maxlength: 15,
+        required: [true,"Phone number is required"],
     },
     role: {
         type: String,
-        enum: ['citizen', 'administrator', 'professional'],
-        required: true
+        enum: ['citizen', 'goverment', 'professional'],
+        default: 'citizen'
     },
     address: {
         type: String,
@@ -41,6 +43,15 @@ const userSchema = new mongoose.Schema({
     },
     refreshToken:{
         type:String,
+    },
+    avatar:{
+        type:String,
+        default:"",
+        required:true
+    },
+    certificate:{
+        type:String,
+        default:""
     },
 },{
     timestamps:true
