@@ -2,6 +2,7 @@ import {User} from "../models/user.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import apierror from "../utils/ApiError.js";
 import asyncHandler from "../utils/asyncHandler.js";
+import { uploadoncloudinary } from "../utils/Cloudinary.js";
 
 const generateRefreshTokenandaccesstoken = async (id) => {
     const refreshToken = await User.generateRefreshToken(id);
@@ -31,22 +32,28 @@ const register = asyncHandler(async (req, res) => {
     }
     console.log(req.files);
     const avatarFile = req.files['avatar'] ? req.files['avatar'][0] : null;
-    const certificateFile = req.files['certificate'] ? req.files['certificate'][0] : null;
-    const avatar = avatarFile.path;
-    const certificate = certificateFile.path;
-    if(!avatar){
+    
+    if(!avatarFile.path){
         throw new apierror(400,"Please upload an avatar");
     }
 
-    console.log(avatar,certificate);
+    const avatar = await uploadoncloudinary(avatarFile.path);
+
+    const certificateFile = req.files['certificate'] ? req.files['certificate'][0] : null;
+    if(!certificateFile.path){
+        throw new apierror(400,"Please upload an Certificate");
+    }
+    
+    const certificate = await uploadoncloudinary(certificateFile.path);
+    
     const user = await User.create({
         fullName,
         email,
         username : username.toLowerCase(),
         password,
         phone_number,
-        avatar,
-        certificate
+        avatar:avatar?.url,
+        certificate : certificate?.url || " "
     });
 
     const saveduser = await User.findById(user._id).select("-password -refreshToken");
