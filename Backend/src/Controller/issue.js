@@ -19,7 +19,7 @@ const createIssue = asyncHandler(async (req, res) => {
     if(!issue){
         throw new apierror(500,"Error in creating issue");
     }
-    res.status(201).json(new ApiResponse(201,{issue}));
+    return res.status(201).json(new ApiResponse(201,{issue}));
 });
 
 const getIssues = asyncHandler(async (req, res) => {
@@ -27,7 +27,7 @@ const getIssues = asyncHandler(async (req, res) => {
     if(!issues){
         throw new apierror(404,"No issues found");
     }
-    res.status(200).json(new ApiResponse(200,{issues}));
+    return res.status(200).json(new ApiResponse(200,{issues}));
 });
 
 const updateIssue = asyncHandler(async (req, res) => {
@@ -45,7 +45,7 @@ const updateIssue = asyncHandler(async (req, res) => {
     if(!issue){
         throw new apierror(404,"No issue found");
     }
-    res.status(200).json(new ApiResponse(200,{issue}));
+    return res.status(200).json(new ApiResponse(200,{issue}));
 });
 
 const deleteIssue = asyncHandler(async (req, res) => {
@@ -54,7 +54,7 @@ const deleteIssue = asyncHandler(async (req, res) => {
     if(!issue){
         throw new apierror(404,"No issue found");
     }
-    res.status(200).json(new ApiResponse(200,{issue}));
+    return res.status(200).json(new ApiResponse(200,{issue}));
 });
 
 const getIssuebyId = asyncHandler(async (req, res) => {
@@ -64,7 +64,7 @@ const getIssuebyId = asyncHandler(async (req, res) => {
     if(!issue){
         throw new apierror(404,"No issue found");
     }
-    res.status(200).json(new ApiResponse(200,{issue}));
+    return res.status(200).json(new ApiResponse(200,{issue}));
 });
 
 export {createIssue,getIssues,updateIssue,deleteIssue,getIssuebyId};

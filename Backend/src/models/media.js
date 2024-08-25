@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const mediaSchema = new mongoose.Schema({
   issue_id: {

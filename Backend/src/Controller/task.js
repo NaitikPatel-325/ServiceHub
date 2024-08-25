@@ -19,7 +19,7 @@ const createTask = asyncHandler(async (req, res) => {
     if(!task){
         throw new apierror(500,"Error in creating task");
     }
-    res.status(201).json(new ApiResponse(201,{task}));
+    return res.status(201).json(new ApiResponse(201,{task}));
 }
 );
 
@@ -28,7 +28,7 @@ const getTasks = asyncHandler(async (req, res) => {
     if(!tasks){
         throw new apierror(404,"No tasks found");
     }
-    res.status(200).json(new ApiResponse(200,{tasks}));
+    return res.status(200).json(new ApiResponse(200,{tasks}));
 }
 );
 
@@ -47,7 +47,7 @@ const updateTask = asyncHandler(async (req, res) => {
     if(!task){
         throw new apierror(404,"No task found");
     }
-    res.status(200).json(new ApiResponse(200,{task}));
+    return res.status(200).json(new ApiResponse(200,{task}));
 }
 );
 
@@ -57,7 +57,7 @@ const deleteTask = asyncHandler(async (req, res) => {
     if(!task){
         throw new apierror(404,"No task found");
     }
-    res.status(200).json(new ApiResponse(200,{task}));
+    return res.status(200).json(new ApiResponse(200,{task}));
 });
 
 const getTaskbyId = asyncHandler(async (req, res) => {
@@ -67,7 +67,7 @@ const getTaskbyId = asyncHandler(async (req, res) => {
     if(!task){
         throw new apierror(404,"No task found");
     }
-    res.status(200).json(new ApiResponse(200,{task}));
+    return res.status(200).json(new ApiResponse(200,{task}));
 });
 
 export {createTask,getTasks,getTaskbyId,updateTask,deleteTask};

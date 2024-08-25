@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const proposalSchema = new mongoose.Schema({
   issue_id: {
@@ -28,6 +28,8 @@ const proposalSchema = new mongoose.Schema({
   timestamps: true
 });
 
-const Proposal = mongoose.model('Proposal', proposalSchema);
+// const Proposal = mongoose.model('Proposal', proposalSchema);
 
-module.exports = Proposal;
+// module.exports = Proposal;
+
+export const Proposal = mongoose.model("Proposal", proposalSchema);

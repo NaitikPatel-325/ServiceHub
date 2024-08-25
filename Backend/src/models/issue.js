@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const issueSchema = new mongoose.Schema({
   reporter_id: {

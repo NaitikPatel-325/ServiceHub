@@ -18,7 +18,7 @@ const createProposal = asyncHandler(async (req, res) => {
     if(!proposal){
         throw new apierror(500,"Error in creating proposal");
     }
-    res.status(201).json(new ApiResponse(201,{proposal}));
+    return res.status(201).json(new ApiResponse(201,{proposal}));
 }
 );
 
@@ -27,7 +27,7 @@ const getProposals = asyncHandler(async (req, res) => {
     if(!proposals){
         throw new apierror(404,"No proposals found");
     }
-    res.status(200).json(new ApiResponse(200,{proposals}));
+    return res.status(200).json(new ApiResponse(200,{proposals}));
 }
 );
 
@@ -45,7 +45,7 @@ const updateProposal = asyncHandler(async (req, res) => {
     if(!proposal){
         throw new apierror(404,"No proposal found");
     }
-    res.status(200).json(new ApiResponse(200,{proposal}));
+    return res.status(200).json(new ApiResponse(200,{proposal}));
 }
 );
 
@@ -56,7 +56,7 @@ const deleteProposal = asyncHandler(async (req, res) => {
         throw new apierror(404,"No proposal found");
     }
 
-    res.status(200).json(new ApiResponse(200,{proposal}));
+    return res.status(200).json(new ApiResponse(200,{proposal}));
 
 }
 );
@@ -69,7 +69,7 @@ const getProposalbyId = asyncHandler(async (req, res) => {
         throw new apierror(404,"No proposal found");
     }
 
-    res.status(200).json(new ApiResponse(200,{proposal}));
+    return res.status(200).json(new ApiResponse(200,{proposal}));
 }
 );
 

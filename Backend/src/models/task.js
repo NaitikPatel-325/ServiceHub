@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const taskSchema = new mongoose.Schema({
   issue_id: {
@@ -20,6 +20,8 @@ const taskSchema = new mongoose.Schema({
   timestamps: { createdAt: 'assigned_at', updatedAt: 'completed_at' } 
 });
 
-const Task = mongoose.model('Task', taskSchema);
+// const Task = mongoose.model('Task', taskSchema);
 
-module.exports = Task;
+// module.exports = Task;
+
+export const Task = mongoose.model("Task", taskSchema);
