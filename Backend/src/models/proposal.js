@@ -17,13 +17,17 @@ const proposalSchema = new mongoose.Schema({
     maxlength: 255
   },
   cost_estimate: {
-    type: mongoose.Types.Decimal128,
+    type: String,
     required: true
   },
   time_estimate_days: {
     type: Number, 
     required: true
-  }
+  },
+  document: {
+    type: String,
+    default: ""
+  },
 }, {
   timestamps: true
 });

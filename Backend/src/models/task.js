@@ -11,6 +11,22 @@ const taskSchema = new mongoose.Schema({
     ref: 'User', 
     required: true
   },
+  task_description: {
+    type: String,
+    required: true,
+  },
+  task_cost:{
+    type: String,
+    required: true
+  },
+  task_estimate_days:{
+    type: String,
+    required: true
+  },
+  task_location:{
+    type: String,
+    required: true
+  },
   status: {
     type: String,
     enum: ['Assigned', 'In Progress', 'Completed', 'Rejected'],

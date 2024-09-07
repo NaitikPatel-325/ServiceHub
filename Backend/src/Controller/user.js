@@ -4,103 +4,152 @@ import apierror from "../utils/ApiError.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadoncloudinary } from "../utils/Cloudinary.js";
 
-const generateRefreshTokenandaccesstoken = async (id) => {
-    const refreshToken = await User.generateRefreshToken(id);
-    const accessToken = await User.generateAccessToken(id);
+// const generateRefreshTokenandaccesstoken = async (id) => {
+//     const refreshToken = await User.generateRefreshToken(id);
+//     const accessToken = await User.generateAccessToken(id);
+//     if(!refreshToken || !accessToken){
+//         throw new apierror(500,"Error in generating token");
+//     }
+
+//     return {refreshToken,accessToken};
+// };   
+
+const generateRefreshTokenandaccesstoken = async (user) => {
+    const refreshToken = await user.generateRefreshToken();
+    const accessToken = await user.generateAccessToken();
     if(!refreshToken || !accessToken){
         throw new apierror(500,"Error in generating token");
     }
 
     return {refreshToken,accessToken};
-};   
+};
 
 const register = asyncHandler(async (req, res) => {
     console.log(req.body);
-    const{fullName,email,username,password,phone_number}  = req.body;
-    console.log(fullName,email,username,password);  
+    const { fullName, email, username, password, phone_number } = req.body;
+    console.log(fullName, email, username, password);
 
-    if([fullName,email,username,password].some((field) => field?.trim()==='')){
-        throw new apierror(400,"Please fill all the fields");
+    if ([fullName, email, username, password].some((field) => field?.trim() === '')) {
+        throw new apierror(400, "Please fill all the fields");
     }
 
-    const existeduser =await User.findOne({
-        $or:[{email},{username}]
-    })
+    const existeduser = await User.findOne({
+        $or: [{ email }, { username }]
+    });
 
-    if(existeduser){
-        throw new apierror(409,"User already exists");
+    if (existeduser) {
+        throw new apierror(409, "User already exists");
     }
+
     console.log(req.files);
-    const avatarFile = req.files['avatar'] ? req.files['avatar'][0] : null;
-    
-    if(!avatarFile.path){
-        throw new apierror(400,"Please upload an avatar");
+
+    const avatarFile = req.files?.['avatar'] ? req.files['avatar'][0] : null;
+    if (!avatarFile || !avatarFile.path) {
+        throw new apierror(400, "Please upload an avatar");
     }
 
     const avatar = await uploadoncloudinary(avatarFile.path);
 
-    const certificateFile = req.files['certificate'] ? req.files['certificate'][0] : null;
-    if(!certificateFile.path){
-        throw new apierror(400,"Please upload an Certificate");
+    const certificateFile = req.files?.['certificate'] ? req.files['certificate'][0] : null;
+    let certificateUrl = "";
+
+    if (certificateFile && certificateFile.path) {
+        const certificate = await uploadoncloudinary(certificateFile.path);
+        certificateUrl = certificate?.url || "";
     }
-    
-    const certificate = await uploadoncloudinary(certificateFile.path);
-    
+
     const user = await User.create({
         fullName,
         email,
-        username : username.toLowerCase(),
+        username: username.toLowerCase(),
         password,
         phone_number,
-        avatar:avatar?.url,
-        certificate : certificate?.url || " "
+        avatar: avatar?.url,
+        certificate: certificateUrl
     });
 
     const saveduser = await User.findById(user._id).select("-password -refreshToken");
-    if(!saveduser){
-        throw new apierror(500,"Error in creating user");
+    if (!saveduser) {
+        throw new apierror(500, "Error in creating user");
     }
 
     console.log("saved" + saveduser);
-    return res.status(201).json(new ApiResponse(200,"User registered successfully",{user:saveduser}));  
-})
+    return res.status(201).json(new ApiResponse(200, "User registered successfully", { user: saveduser }));
+});
+
+// const loginuser = asyncHandler(async (req, res) => {
+//     const{email,username,password}  = req.body;
+//     console.log(req.body);
+
+//     if(!email || !username ){
+//         throw new apierror(400,"Please provide email or username");
+//     }
+
+//     const user = await User.findOne({ $or: [{ email }, { username }]});
+
+//     if(!user){
+//         throw new apierror(404,"User Does not exist");
+//     }
+
+//     const ismatch = await user.passwordCheck(password);    
+
+//     if(!ismatch){
+//         throw new apierror(401,"Password is incorrect");
+//     }
+    
+//     const {refreshToken,accessToken} = await generateRefreshTokenandaccesstoken(user._id);
+
+//     const loggedinuser = await User.findOne({ $or: [{ email }, { username }]}).select("-password -refreshToken");
+
+//     const options = {
+//         httpOnly:true,
+//         secure:true
+//     }
+
+//     return res
+//     .status(200)
+//     .cookie("refreshToken",refreshToken,options)
+//     .cookie("accessToken",accessToken,options)
+//     .json(new ApiResponse(200,{user:loggedinuser,accessToken,refreshToken},"User logged in successfully"));
+
+// })
 
 const loginuser = asyncHandler(async (req, res) => {
-    const{email,username,password}  = req.body;
+    const { email, username, password } = req.body;
     console.log(req.body);
 
-    if(!email || !username ){
-        throw new apierror(400,"Please provide email or username");
+    if (!email || !username) {
+        throw new apierror(400, "Please provide email or username");
     }
 
-    const user = await User.findOne({ $or: [{ email }, { username }]});
+    const user = await User.findOne({ $or: [{ email }, { username }] });
 
-    if(!user){
-        throw new apierror(404,"User Does not exist");
+    if (!user) {
+        throw new apierror(404, "User does not exist");
     }
 
-    const ismatch = await user.passwordCheck(password);    
+    const ismatch = await user.passwordCheck(password);
 
-    if(!ismatch){
-        throw new apierror(401,"Password is incorrect");
+    if (!ismatch) {
+        throw new apierror(401, "Password is incorrect");
     }
-    
-    const {refreshToken,accessToken} = await generateRefreshTokenandaccesstoken(user._id);
 
-    const loggedinuser = await User.findOne({ $or: [{ email }, { username }]}).select("-password -refreshToken");
+    const { refreshToken, accessToken } = await generateRefreshTokenandaccesstoken(user);
+
+    const loggedinuser = await User.findOne({ $or: [{ email }, { username }] }).select("-password -refreshToken");
 
     const options = {
-        httpOnly:true,
-        secure:true
-    }
+        httpOnly: true,
+        secure: true
+    };
 
     return res
-    .status(200)
-    .cookie("refreshToken",refreshToken,options)
-    .cookie("accessToken",accessToken,options)
-    .json(new ApiResponse(200,{user:loggedinuser,accessToken,refreshToken},"User logged in successfully"));
+        .status(200)
+        .cookie("refreshToken", refreshToken, options)
+        .cookie("accessToken", accessToken, options)
+        .json(new ApiResponse(200, { user: loggedinuser, accessToken, refreshToken }, "User logged in successfully"));
+});
 
-})
 
 export {
     loginuser,
