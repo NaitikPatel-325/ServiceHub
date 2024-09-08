@@ -32,8 +32,4 @@ const proposalSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// const Proposal = mongoose.model('Proposal', proposalSchema);
-
-// module.exports = Proposal;
-
 export const Proposal = mongoose.model("Proposal", proposalSchema);

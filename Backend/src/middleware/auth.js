@@ -2,7 +2,8 @@ import jwt from "jsonwebtoken";
 import ApiError from "../utils/ApiError.js";
 
 const authenticateUser = (req, res, next) => {
-    const token = req.headers.authorization?.split(" ")[1]; 
+    const token = req.cookies?.accessToken || req.headers?.("authorization").replace("Bearer ", ""); 
+    console.log(token)
     req.user = null;
 
     if (!token) {

@@ -19,7 +19,6 @@ app.use(express.urlencoded({extended: true, limit: '20kb'}));
 app.use(express.static('public'));
 app.use(cookieparser());
 
-// app.use(authenticateUser);
 app.use('/user',userRouter);
 app.use('/issue',authenticateUser,issuseRouter);
 app.use('/proposal',authenticateUser,proposalRouter);

@@ -36,8 +36,5 @@ const taskSchema = new mongoose.Schema({
   timestamps: { createdAt: 'assigned_at', updatedAt: 'completed_at' } 
 });
 
-// const Task = mongoose.model('Task', taskSchema);
-
-// module.exports = Task;
 
 export const Task = mongoose.model("Task", taskSchema);

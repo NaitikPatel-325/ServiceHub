@@ -8,7 +8,7 @@ router.route("/").get(getIssues);
 router.route("/:id").get(getIssuebyId);
 router.route("/:id").put(updateIssue);
 router.route("/:id").delete(deleteIssue);
-router.route("/user/:id").get(getIssuebyReporterId);
+router.route("/user/:id").get(getIssuebyReporterId); 
 router.route("/proposal/:id").get(getProposalbyIssueId);
 router.route("/task/:id").get(getTaskbyIssueId);
 
