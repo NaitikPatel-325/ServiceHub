@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
   },
-  "author": "Naitik Patel",
+  "author": "Naitik Patel & Udit Mehta",
   "license": "ISC",
   "description": "",
   "dependencies": {

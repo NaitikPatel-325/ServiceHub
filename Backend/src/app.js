@@ -22,6 +22,6 @@ app.use(cookieparser());
 app.use('/user',userRouter);
 app.use('/issue',authenticateUser,issuseRouter);
 app.use('/proposal',authenticateUser,proposalRouter);
-app.use('/task',taskRouter);
+app.use('/task',authenticateUser,taskRouter);
 
 export default app;
