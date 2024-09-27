@@ -61,16 +61,10 @@ function App() {
   return (
     <div className="flex min-h-screen flex-col items-center">
       <Router>
-
       <Toaster />
-
-
       <div className="mb-24 ">
       <Nav toggleLogin={toggleLogin} isLoggedIn={isLoggedIn} routes={routes} user={user} />
-
-
       </div>
-
       <Routes>
         <Route path="/" element={<Home />} />  
       </Routes>

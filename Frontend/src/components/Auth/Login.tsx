@@ -63,30 +63,24 @@ export default function Login({
     console.log(data);
 
     setLoading(true);
+    try {
+      // console.log(data);
+      const res = await axios.post("http://localhost:3000/user/login", data, {  
+        withCredentials: true 
+      });
 
-    // try{
-    //   const res = await axios.post("http://localhost:3000/api/v1/login", data ,
-    //   {
-    //     headers: {
-    //       "Content-Type": "application/json"
-    //     },
-    //     withCredentials: true
-    //   });
-    //   console.log(res.data);
-    //   if(res.data.user){
-    //     dispatch({type:"SET_USER",payload:res.data.user})
-    //   }
-    //   toast.success("Logged in successfully");
-    //   toggleLogin();
-    //   onClose();
-    // }
-    // catch(err){
-    //   // console.log(err)
-    //   toast.error("Invalid Credentials");
-
-    // }
-    setLoading(false);
-    
+      if (res.data.user) {
+          dispatch({ type: "SET_USER", payload: res.data.user }); 
+      }
+      toast.success("Logged in successfully"); 
+      toggleLogin(); 
+      onClose(); 
+  } catch (err) {
+      console.log(err); 
+      toast.error("Invalid Credentials"); 
+  } finally {
+      setLoading(false);
+  }
 };
 
   
