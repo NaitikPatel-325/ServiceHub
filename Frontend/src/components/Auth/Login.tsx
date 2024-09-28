@@ -39,6 +39,7 @@ export default function Login({
     email: "",
     password: "",
   });
+  
   const handleRegisterAndClose = () => { 
     onClose();
     onOpenRegister();

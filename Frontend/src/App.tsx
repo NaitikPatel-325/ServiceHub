@@ -5,39 +5,30 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Nav from "./components/Nav";
 import { useDispatch, useSelector } from "react-redux";
 import { Toaster } from 'react-hot-toast';
+import IssueTracker from "./components/issue/issue";
+import axios from "axios";
 
 function App() {
-  const dispatch = useDispatch()
-  const user = useSelector((state : any) => state.user.user) || {};
-  const loadUser = async () => {
-    // try {
-    //   const { data } = await axios.get("http://localhost:3000/api/v1/me", {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     withCredentials: true,
-    //   });
+    const dispatch = useDispatch()
+    const user = useSelector((state : any) => state.user.user) || {};
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    //   // console.log(data)
-
-    //   if (data.user) {
-    //     dispatch({ type: "SET_USER", payload: data.user });
-    //     toggleLogin();
-        
-    //   } else {
-    //     dispatch({ type: "CLEAR_USER" });
-    //   }
-    // } catch (err) {
-    //   console.log(err)
-    // }
+    const loadUser = async () => {
+    
+      try {
+        const res = await axios.get("http://localhost:3000/user/check", { withCredentials: true });
+        if (res.data) {
+          dispatch({ type: "SET_USER", payload: res.data.user });
+          toggleLogin();
+        }
+      } catch (error) {
+        console.log(error);
+      }
   }
 
   useEffect(() => {
     loadUser();
-    // toast.success('Welcome to KisaanSathi')
   }, [])
-
-
 
   const routes = [
     {
@@ -47,12 +38,12 @@ function App() {
     {
       path: "/about",
       name : "About",
+    },
+    {
+      path:"/issues",
+      name : "Issues",
     }
-
   ]
-
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const toggleLogin = () => {
     setIsLoggedIn(!isLoggedIn);
@@ -67,6 +58,7 @@ function App() {
       </div>
       <Routes>
         <Route path="/" element={<Home />} />  
+        <Route path="/issues" element={<IssueTracker />} />
       </Routes>
 
       </Router>

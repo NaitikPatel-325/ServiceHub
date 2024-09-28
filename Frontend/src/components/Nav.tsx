@@ -42,7 +42,6 @@ const CustomNavLink: React.FC<CustomNavLinkProps> = ({
 
 export default function Nav({ toggleLogin, isLoggedIn , routes , user }: any) {
 
-
   // const toast = useToast();
   const dispatch = useDispatch();
 
@@ -59,23 +58,22 @@ export default function Nav({ toggleLogin, isLoggedIn , routes , user }: any) {
 
   const logout = async () => {
 
-    
-    // try{
-    //   await axios.get("http://localhost:3000/api/v1//logout", {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     withCredentials: true,
-    //   });
-    //   dispatch({
-    //     type: "CLEAR_USER",
-    //   });
+    try{
+      await axios.post("http://localhost:3000/user/logout", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      dispatch({
+        type: "CLEAR_USER",
+      });
 
-    //   toast.success("Logged out successfully");
-    //   toggleLogin();
-    // }catch(err){
-    //   toast.error("Error");
-    // }
+      toast.success("Logged out successfully");
+      toggleLogin();
+    }catch(err){
+      toast.error("Error");
+    }
 
 
   

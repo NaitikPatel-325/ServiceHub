@@ -4,16 +4,6 @@ import apierror from "../utils/ApiError.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadoncloudinary } from "../utils/Cloudinary.js";
 
-// const generateRefreshTokenandaccesstoken = async (id) => {
-//     const refreshToken = await User.generateRefreshToken(id);
-//     const accessToken = await User.generateAccessToken(id);
-//     if(!refreshToken || !accessToken){
-//         throw new apierror(500,"Error in generating token");
-//     }
-
-//     return {refreshToken,accessToken};
-// };   
-
 const generateRefreshTokenandaccesstoken = async (user) => {
     const refreshToken = await user.generateRefreshToken();
     const accessToken = await user.generateAccessToken();
@@ -79,7 +69,8 @@ const register = asyncHandler(async (req, res) => {
 
 const loginuser = asyncHandler(async (req, res) => {
     const { email, username, password } = req.body;
-    console.log(email);
+    console.log(req.body);
+    // console.log(email);
 
     if (!email && !username) {
         throw new apierror(400, "Please provide email or username");
@@ -153,34 +144,30 @@ const refreshToken = asyncHandler(async (req, res) => {
 });
 
 const logoutuser = asyncHandler(async (req, res) => {
-    await User.findByIdAndUpdate(
-        req.user._id,
-        {
-            $set:{
-                refreshToken:undefined
-            }
-        },
-        {
-            new:true
-        },
-    );
     
     const options = {
         httpOnly:true,
         secure:true
     }
 
-    return res.
-    status(200)
+    return res
+    .status(200)
     .clearCookie("refreshToken",options)
     .clearCookie("accessToken",options)
-    .json(new ApiResponse(200,{},"User logged out successfully"));
+    .json(new ApiResponse(200,"User logged out successfully"));
     
+});
+
+const IsLoggedIn = asyncHandler(async (req, res) => {
+
+    return res.status(200).json(new ApiResponse(200,{},req.user));
+
 });
 
 export {
     loginuser,
     register,
     refreshToken,
-    logoutuser
+    logoutuser,
+    IsLoggedIn
 }
