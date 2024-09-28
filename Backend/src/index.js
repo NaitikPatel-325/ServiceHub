@@ -7,6 +7,7 @@ dotenv.config({
 connectdb()
 .then(()=>{
     app.listen(process.env.PORT,()=>{
+        console.log(process.env.CORS_ORIGIN);
         console.log(`Server is running on port ${process.env.PORT}`);
     }) 
 })

@@ -26,10 +26,10 @@ const generateRefreshTokenandaccesstoken = async (user) => {
 
 const register = asyncHandler(async (req, res) => {
     console.log(req.body);
-    const { fullName, email, username, password, phone_number } = req.body;
-    console.log(fullName, email, username, password);
+    const {  email, username, password, phone_number ,address} = req.body;
+    console.log( email, username, password,address);
 
-    if ([fullName, email, username, password].some((field) => field?.trim() === '')) {
+    if ([email, username, password].some((field) => field?.trim() === '')) {
         throw new apierror(400, "Please fill all the fields");
     }
 
@@ -59,13 +59,13 @@ const register = asyncHandler(async (req, res) => {
     }
 
     const user = await User.create({
-        fullName,
         email,
         username: username.toLowerCase(),
         password,
         phone_number,
         avatar: avatar?.url,
-        certificate: certificateUrl
+        certificate: certificateUrl,
+        address
     });
 
     const saveduser = await User.findById(user._id).select("-password -refreshToken");
@@ -79,7 +79,7 @@ const register = asyncHandler(async (req, res) => {
 
 const loginuser = asyncHandler(async (req, res) => {
     const { email, username, password } = req.body;
-    console.log(req.body);
+    console.log(email);
 
     if (!email && !username) {
         throw new apierror(400, "Please provide email or username");

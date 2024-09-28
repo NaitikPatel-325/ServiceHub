@@ -19,7 +19,7 @@ router.route('/register').post(
     register
 );
 router.route('/login').post(loginuser);
-router.route('/refreshToken').post(refreshToken); //we will use this route to refresh the token in frontend
+router.route('/refreshToken').post(refreshToken); 
 
 router.route("/logout").post(
     authenticateUser,
