@@ -144,7 +144,7 @@ const refreshToken = asyncHandler(async (req, res) => {
 });
 
 const logoutuser = asyncHandler(async (req, res) => {
-    
+    // console.log(req.cookies);
     const options = {
         httpOnly:true,
         secure:true
@@ -152,9 +152,10 @@ const logoutuser = asyncHandler(async (req, res) => {
 
     return res
     .status(200)
-    .clearCookie("refreshToken",options)
-    .clearCookie("accessToken",options)
-    .json(new ApiResponse(200,"User logged out successfully"));
+    .cookie("refreshToken", "", options) // Set refreshToken to an empty string
+    .cookie("accessToken", "", options)  // Set accessToken to an empty string
+    .json(new ApiResponse(200, "User logged out, tokens set to empty."));
+  
     
 });
 

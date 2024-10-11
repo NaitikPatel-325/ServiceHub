@@ -22,7 +22,10 @@ app.use(express.urlencoded({extended: true, limit: '20kb'}));
 app.use(express.static('public'));
 app.use(cookieparser());
 
-app.use('/user',userRouter);
+app.use('/user',(req,res,next)=>{
+    console.log(req.cookies);
+    next()
+},userRouter);
 app.use('/issue',authenticateUser,issuseRouter);
 app.use('/proposal',authenticateUser,proposalRouter);
 app.use('/task',authenticateUser,taskRouter);
