@@ -23,7 +23,15 @@ const issueSchema = new mongoose.Schema({
     type: String,
     enum: ['Reported', 'In Progress', 'Resolved', 'Closed'],
     default: 'Reported'
-  }
+  },
+  photos: {
+    type: [String],  
+    default: []      
+  },
+  video: {
+    type: String,    
+    default: null    
+  },
 }, {
   timestamps: true 
 });

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Toaster } from 'react-hot-toast';
 import IssueTracker from "./components/issue/issue";
 import axios from "axios";
+import IssueDetails from "./components/issue/IssueDetails";
 
 function App() {
     const dispatch = useDispatch()
@@ -59,6 +60,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />  
         <Route path="/issues" element={<IssueTracker />} />
+        <Route path="/issue/:id" element={< IssueDetails />} />
       </Routes>
 
       </Router>

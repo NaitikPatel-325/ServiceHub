@@ -1,5 +1,4 @@
-// src/components/ProposalForm.jsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -7,7 +6,7 @@ const ProposalForm = ({ isEdit = false }) => {
   const [proposalDescription, setProposalDescription] = useState('');
   const [costEstimate, setCostEstimate] = useState('');
   const [timeEstimate, setTimeEstimate] = useState('');
-  const [document, setDocument] = useState(null);
+  const [document, setDocument] = useState<File | null>(null);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -29,7 +28,7 @@ const ProposalForm = ({ isEdit = false }) => {
     }
   }, [isEdit, id]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -93,7 +92,7 @@ const ProposalForm = ({ isEdit = false }) => {
           <label className="block text-sm font-medium">Document (optional)</label>
           <input
             type="file"
-            onChange={(e) => setDocument(e.target.files[0])}
+            onChange={(e) => setDocument(e.target.files ? e.target.files[0] : null)}
             className="w-full bg-gray-800 border border-gray-700 p-2 rounded-md"
           />
         </div>
