@@ -6,7 +6,6 @@ import { uploadoncloudinary } from "../utils/Cloudinary.js";
 
 const createProposal = asyncHandler(async (req, res) => {
     const {proposal_description,cost_estimate,time_estimate_days} = req.body;
-    const professional_id= req.user._id;
 
     const {issue_id} = req.body;
 
@@ -23,13 +22,11 @@ const createProposal = asyncHandler(async (req, res) => {
     }
 
     console.log("+++++++++++++++++++++++++++++");
-    console.log(professional_id);
     
     console.log(req.body);
 
     const proposal = await Proposal.create({
         issue_id: issue_id,
-        professional_id: professional_id,
         proposal_description: proposal_description,
         cost_estimate: cost_estimate,
         time_estimate_days: time_estimate_days,
@@ -106,6 +103,19 @@ const getProposalbyId = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200,{proposal}));
 });
 
+const getProposalbyIssueId = asyncHandler(async (req, res) => {
+    const {id} = req.params;
+    const proposal= await Proposal.find({
+        issue_id:id
+    });
+    console.log("joo", proposal);
+    if(!proposal){
+        throw new apierror(404,"No proposal found");
+    }
+
+    return res.status(200).json(new ApiResponse(200,{proposal}));
+});
+
 const getProposalbyProfessionalId = asyncHandler(async (req, res) => {
     const {id} = req.params;
     const proposal= await Proposal.find({
@@ -120,4 +130,4 @@ const getProposalbyProfessionalId = asyncHandler(async (req, res) => {
 });
 
 
-export {createProposal,getProposals,updateProposal,deleteProposal,getProposalbyId,getProposalbyProfessionalId};
+export {createProposal,getProposals,updateProposal,deleteProposal,getProposalbyId,getProposalbyProfessionalId,getProposalbyIssueId};

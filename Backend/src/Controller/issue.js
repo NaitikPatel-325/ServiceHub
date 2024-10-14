@@ -69,7 +69,7 @@ const createIssue = asyncHandler(async (req, res) => {
 const getIssues = asyncHandler(async (req, res) => {
     const issues = await Issue.find();
     if(!issues){
-        throw new apierror(404,"No issues found");
+        throw new apierror(404,"No issues found").select("-photos -video"); 
     }
     return res.status(200).json(new ApiResponse(200,{issues}));
 });

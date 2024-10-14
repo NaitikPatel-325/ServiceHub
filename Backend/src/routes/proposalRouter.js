@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createProposal, getProposals,getProposalbyId,updateProposal,deleteProposal,getProposalbyProfessionalId } from "../Controller/proposal.js";
+import { createProposal, getProposals,getProposalbyId,getProposalbyIssueId,updateProposal,deleteProposal,getProposalbyProfessionalId } from "../Controller/proposal.js";
 import { upload } from "../middleware/multer.js";
 
 const router = Router();
@@ -14,7 +14,7 @@ router.route("/").post(
     ]),
     createProposal
 );
-
+router.route("/:id/solution").get(getProposalbyIssueId);
 router.route("/").get(getProposals);
 router.route("/:id").get(getProposalbyId);
 router.route("/:id").put(
