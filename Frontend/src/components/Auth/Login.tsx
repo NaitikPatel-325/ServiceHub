@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { useDispatch } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 
 interface LoginProps {
   isOpen: boolean;
@@ -32,6 +32,7 @@ export default function Login({
 }: LoginProps) {
 
   const dispatch = useDispatch();
+  const user = useSelector((state:any) => state?.user)
   // const toast = useToast();
   const [Loading, setLoading] = useState(false);
 
@@ -61,18 +62,18 @@ export default function Login({
 
   const loginUser = async (e: any) => {
     e.preventDefault();
-    console.log(data);
+    // console.log(data);
 
     setLoading(true);
     try {
-      // console.log(data);
       const res = await axios.post("http://localhost:3000/user/login", data, {  
         withCredentials: true 
       });
-
+      // console.log(res.data);
       if (res.data.user) {
-          dispatch({ type: "SET_USER", payload: res.data.user }); 
+          dispatch({ type: "SET_USER", payload: res.data.data.user }); 
       }
+      console.log(user);
       toast.success("Logged in successfully"); 
       toggleLogin(); 
       onClose(); 

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Input, Textarea } from '@chakra-ui/react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useSelector } from "react-redux";
+
 
 interface AddProposalModalProps {
   isOpen: boolean;
@@ -10,6 +12,9 @@ interface AddProposalModalProps {
 }
 
 const AddProposalModal: React.FC<AddProposalModalProps> = ({ isOpen, onClose, issueId }) => {
+  const user = useSelector((state:any) => state?.user)
+  console.log(user);
+
   const [proposalDescription, setProposalDescription] = useState('');
   const [costEstimate, setCostEstimate] = useState('');
   const [timeEstimateDays, setTimeEstimateDays] = useState('');
@@ -20,7 +25,6 @@ const AddProposalModal: React.FC<AddProposalModalProps> = ({ isOpen, onClose, is
       setDocument(e.target.files[0]); 
     }
   };
-
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append('proposal_description', proposalDescription);
