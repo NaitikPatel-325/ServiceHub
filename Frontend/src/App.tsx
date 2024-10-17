@@ -8,6 +8,7 @@ import { Toaster } from 'react-hot-toast';
 import IssueTracker from "./components/issue/issue";
 import axios from "axios";
 import IssueDetails from "./components/issue/IssueDetails";
+import PropoalList from "./components/proposal/PropoalList";
 
 function App() {
     const dispatch = useDispatch()
@@ -18,8 +19,9 @@ function App() {
     
       try {
         const res = await axios.get("http://localhost:3000/user/check", { withCredentials: true });
+        console.log(res.data);
         if (res.data) {
-          dispatch({ type: "SET_USER", payload: res.data.user });
+          dispatch({ type: "SET_USER", payload: res.data.data.user });
           toggleLogin();
         }
       } catch (error) {
@@ -61,6 +63,9 @@ function App() {
         <Route path="/" element={<Home />} />  
         <Route path="/issues" element={<IssueTracker />} />
         <Route path="/issue/:id" element={< IssueDetails />} />
+        <Route path="/about" element={<div>About</div>} />
+        <Route path="/issue/proposal/:id" element={<PropoalList/>}/>
+        <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
 
       </Router>
