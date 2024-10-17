@@ -79,6 +79,10 @@ export default function Nav({ toggleLogin, isLoggedIn , routes , user }: any) {
   
   };
 
+  const Profile = () => {
+    console.log("Profile");
+  }
+
   return (
     <div>
       <nav className="border-b border-gray-800 fixed w-full z-20 top-0 start-0   glassy-effect-navbar">
@@ -126,6 +130,9 @@ export default function Nav({ toggleLogin, isLoggedIn , routes , user }: any) {
                   >
                     <MenuItem bg={"gray.900"}>{user?.name}</MenuItem>
                   </CustomNavLink>
+                  <MenuItem onClick={Profile} bg={"gray.900"}>
+                    <span>Profile</span>
+                  </MenuItem>
                   <MenuItem onClick={logout} bg={"gray.900"}>
                     <span className="text-red-500">Logout</span>
                   </MenuItem>
