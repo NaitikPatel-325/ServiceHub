@@ -23,10 +23,6 @@ const taskSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  task_location:{
-    type: String,
-    required: true
-  },
   status: {
     type: String,
     enum: ['Assigned', 'In Progress', 'Completed', 'Rejected'],

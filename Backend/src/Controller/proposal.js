@@ -6,7 +6,7 @@ import { uploadoncloudinary } from "../utils/Cloudinary.js";
 
 const createProposal = asyncHandler(async (req, res) => {
     const {proposal_description,cost_estimate,time_estimate_days} = req.body;
-
+    const solution_provider_id = req.user._id;
     const {issue_id} = req.body;
 
     if([proposal_description,cost_estimate,time_estimate_days].some((field) => field?.trim()==='')){
@@ -30,7 +30,8 @@ const createProposal = asyncHandler(async (req, res) => {
         proposal_description: proposal_description,
         cost_estimate: cost_estimate,
         time_estimate_days: time_estimate_days,
-        document: document
+        document: document,
+        solution_provider_id: solution_provider_id
     });
 
     if(!proposal){
@@ -40,19 +41,18 @@ const createProposal = asyncHandler(async (req, res) => {
 });
 
 const getProposals = asyncHandler(async (req, res) => {
-    const proposals = await Proposal.find();
+    const proposals = await Proposal.find().select('-solution_provider_id');
     if(!proposals){
         throw new apierror(404,"No proposals found");
     }
-    return res.status(200).json(new ApiResponse(200,{proposals}));
+    return res.status(200).json(new ApiResponse(200,{proposals},"All Proposals fetched successfully"));
 }
 );
 
 const updateProposal = asyncHandler(async (req, res) => {
-
     const {id} = req.params;
     const {proposal_description,cost_estimate,time_estimate_days} = req.body;
-    const professional_id= req.user._id;
+    const solution_provider_id = req.user._id;
 
     if([proposal_description,cost_estimate,time_estimate_days].some((field) => field?.trim()==='')){
         throw new apierror(400,"Please fill all the fields");
@@ -69,11 +69,11 @@ const updateProposal = asyncHandler(async (req, res) => {
     console.log(document);  
 
     const proposal = await Proposal.findByIdAndUpdate(id,{
-        professional_id: professional_id,
         proposal_description: proposal_description,
         cost_estimate: cost_estimate,
         time_estimate_days: time_estimate_days,
-        document: document
+        document: document,
+        solution_provider_id: solution_provider_id
     },{new:true});
 
     if(!proposal){
@@ -94,7 +94,7 @@ const deleteProposal = asyncHandler(async (req, res) => {
 
 const getProposalbyId = asyncHandler(async (req, res) => {
     const {id} = req.params;
-    const proposal= await Proposal.findById(id);
+    const proposal= await Proposal.findById(id).select('-solution_provider_id');
 
     if(!proposal){
         throw new apierror(404,"No proposal found");
@@ -107,7 +107,7 @@ const getProposalbyIssueId = asyncHandler(async (req, res) => {
     const {id} = req.params;
     const proposal= await Proposal.find({
         issue_id:id
-    });
+    }).select('-solution_provider_id');
     console.log("joo", proposal);
     if(!proposal){
         throw new apierror(404,"No proposal found");
@@ -120,7 +120,7 @@ const getProposalbyProfessionalId = asyncHandler(async (req, res) => {
     const {id} = req.params;
     const proposal= await Proposal.find({
         professional_id:id
-    });
+    }).select('-solution_provider_id');
 
     if(!proposal){
         throw new apierror(404,"No proposal found");

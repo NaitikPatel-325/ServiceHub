@@ -27,6 +27,11 @@ const proposalSchema = new mongoose.Schema({
     type: String,
     default: ""
   },
+  solution_provider_id: {  
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
 }, {
   timestamps: true
 });

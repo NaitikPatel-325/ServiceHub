@@ -160,9 +160,10 @@ const logoutuser = asyncHandler(async (req, res) => {
 });
 
 const IsLoggedIn = asyncHandler(async (req, res) => {
-
-    return res.status(200).json(new ApiResponse(200,{},req.user));
-
+    // console.log(req.user._id);
+    const user = await User.findOne({_id: req.user._id}).select("-password -refreshToken");
+    // console.log("inside check" ,user);
+    return res.status(200).json(new ApiResponse(200,{user},"user is there"));
 });
 
 export {
