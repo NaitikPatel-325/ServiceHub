@@ -23,7 +23,7 @@ app.use(express.static('public'));
 app.use(cookieparser());
 
 app.use('/user',(req,res,next)=>{
-    console.log(req.cookies);
+    // console.log(req.cookies);
     next()
 },userRouter);
 app.use('/issue',authenticateUser,issuseRouter);

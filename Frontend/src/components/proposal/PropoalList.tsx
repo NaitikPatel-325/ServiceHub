@@ -29,7 +29,8 @@ const ProposalList = () => {
           },
           withCredentials: true,
         });
-        setProposals(response.data.data.proposals);
+        console.log('Proposals:', response.data.data.proposal);
+        setProposals(response.data.data.proposal);
       } catch (error) {
         console.error('Error fetching proposals:', error);
         setError('Failed to fetch proposals. Please try again later.');
@@ -39,7 +40,36 @@ const ProposalList = () => {
     };
 
     fetchProposals();
-  }, [issueId]);
+  }, []);
+
+  const handleAccept = async (proposal: Proposal) => {
+    try {
+        
+      const response = await axios.post('http://localhost:3000/task', {
+        proposal_id: proposal._id,  
+        issue_id: proposal.issue_id,
+        task_description: proposal.proposal_description,
+        task_cost: proposal.cost_estimate,
+        task_estimate_days: proposal.time_estimate_days,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });
+
+      console.log('Task created:', response.data);
+      alert('Proposal accepted and task created successfully!');
+    } catch (error) {
+      console.error('Error accepting proposal:', error);
+      alert('Error accepting the proposal. Please try again.');
+    }
+  };
+
+  const handleReject = (proposal: Proposal) => {
+    console.log('Proposal rejected:', proposal);
+
+  };
 
   if (loading) return <div>Loading proposals...</div>;
   if (error) return <div className="text-red-500">{error}</div>;
@@ -85,6 +115,21 @@ const ProposalList = () => {
               <p className="text-sm text-gray-500 mt-4">
                 Created on {new Date(proposal.createdAt).toLocaleString()}
               </p>
+
+              <div className="mt-4 flex justify-between">
+                <button
+                  className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                  onClick={() => handleAccept(proposal)}
+                >
+                  Accept
+                </button>
+                <button
+                  className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+                  onClick={() => handleReject(proposal)}
+                >
+                  Reject
+                </button>
+              </div>
             </div>
           ))
         ) : (
