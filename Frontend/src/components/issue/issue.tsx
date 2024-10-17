@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Search, ChevronDown } from 'lucide-react';
 import axios from 'axios';
 import AddIssueModal from './AddIssue.tsx';
@@ -23,6 +24,8 @@ const statusColors: { [key: string]: string } = {
 };
 
 export default function IssueTracker() {
+  const user = useSelector((state:any) => state?.user?.user)
+  console.log(user?.role);
   const [searchTerm, setSearchTerm] = useState('');
   const [issues, setIssues] = useState<Issue[]>([]);
   const [selectedStatus, setSelectedStatus] = useState('');
@@ -85,7 +88,11 @@ export default function IssueTracker() {
             {filteredIssues.length > 0 ? (
               filteredIssues.map((issue) => (
                 <Link
-                  to={`/issue/${issue._id}`}
+                  to={
+                    user?.role === 'goverment'
+                      ? `/issue/proposal/${issue._id}`
+                      : `/issue/${issue._id}`
+                    }
                   key={issue._id}
                   className="block bg-gray-800 rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow focus:ring focus:ring-blue-500 focus:outline-none"
                 >
