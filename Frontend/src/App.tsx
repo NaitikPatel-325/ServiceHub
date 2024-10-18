@@ -9,6 +9,7 @@ import IssueTracker from "./components/issue/issue";
 import axios from "axios";
 import IssueDetails from "./components/issue/IssueDetails";
 import Profile from "./components/Profile/Profile";
+import ProposalList from "./components/proposal/ProposalList";
 
 function App() {
     const dispatch = useDispatch()
@@ -63,6 +64,8 @@ function App() {
         <Route path="/" element={<Home />} />  
         <Route path="/issues" element={<IssueTracker />} />
         <Route path="/issue/:id" element={< IssueDetails />} />
+        <Route path="issue/proposal/:id" element={< ProposalList/>} />
+        <Route path="/about" element={<div> Hii</div>} />  
         <Route path="/profile" element={<Profile />} />
       </Routes>
 

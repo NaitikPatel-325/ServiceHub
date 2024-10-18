@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Input, Textarea } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Input, Textarea, FormControl, FormLabel } from '@chakra-ui/react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useSelector } from "react-redux";
-
 
 interface AddProposalModalProps {
   isOpen: boolean;
@@ -12,7 +11,7 @@ interface AddProposalModalProps {
 }
 
 const AddProposalModal: React.FC<AddProposalModalProps> = ({ isOpen, onClose, issueId }) => {
-  const user = useSelector((state:any) => state?.user)
+  const user = useSelector((state: any) => state?.user);
   console.log(user);
 
   const [proposalDescription, setProposalDescription] = useState('');
@@ -25,6 +24,7 @@ const AddProposalModal: React.FC<AddProposalModalProps> = ({ isOpen, onClose, is
       setDocument(e.target.files[0]); 
     }
   };
+
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append('proposal_description', proposalDescription);
@@ -52,44 +52,74 @@ const AddProposalModal: React.FC<AddProposalModalProps> = ({ isOpen, onClose, is
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Add New Proposal</ModalHeader>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <ModalOverlay bg='none' backdropFilter='auto' backdropInvert='15%' backdropBlur='2px' />
+      <ModalContent borderRadius={10} bg={"rgb(39 39 42)"} color="white">
+        <ModalHeader className="shadow-lg">Add New Proposal</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
-          <Textarea
-            placeholder="Proposal Description"
-            value={proposalDescription}
-            onChange={(e) => setProposalDescription(e.target.value)}
-            mb={4}
-          />
-          <Input
-            placeholder="Cost Estimate"
-            type="number"
-            value={costEstimate}
-            onChange={(e) => setCostEstimate(e.target.value)}
-            mb={4}
-          />
-          <Input
-            placeholder="Time Estimate (Days)"
-            type="number"
-            value={timeEstimateDays}
-            onChange={(e) => setTimeEstimateDays(e.target.value)}
-            mb={4}
-          />
-          <Input
-            type="file"
-            accept=".pdf,.doc,.docx"
-            onChange={handleDocumentChange}
-            mb={4}
-          />
+        <ModalBody className="shadow-lg">
+          <FormControl mb={4}>
+            <FormLabel>Proposal Description</FormLabel>
+            <Textarea
+              placeholder="Enter proposal description"
+              value={proposalDescription}
+              onChange={(e) => setProposalDescription(e.target.value)}
+              bg="gray.800"
+              border="none"
+              focusBorderColor="blue.500"
+              color="white"
+            />
+          </FormControl>
+
+          <FormControl mb={4}>
+            <FormLabel>Cost Estimate</FormLabel>
+            <Input
+              placeholder="Enter cost estimate"
+              type="number"
+              value={costEstimate}
+              onChange={(e) => setCostEstimate(e.target.value)}
+              bg="gray.800"
+              border="none"
+              focusBorderColor="blue.500"
+              color="white"
+            />
+          </FormControl>
+
+          <FormControl mb={4}>
+            <FormLabel>Time Estimate (Days)</FormLabel>
+            <Input
+              placeholder="Enter time estimate in days"
+              type="number"
+              value={timeEstimateDays}
+              onChange={(e) => setTimeEstimateDays(e.target.value)}
+              bg="gray.800"
+              border="none"
+              focusBorderColor="blue.500"
+              color="white"
+            />
+          </FormControl>
+
+          <FormControl mb={4}>
+            <FormLabel>Upload Document (PDF, DOC, DOCX)</FormLabel>
+            <Input
+              type="file"
+              accept=".pdf,.doc,.docx"
+              onChange={handleDocumentChange}
+              bg="gray.800"
+              border="none"
+              focusBorderColor="blue.500"
+              color="white"
+            />
+          </FormControl>
         </ModalBody>
-        <ModalFooter>
-          <Button colorScheme="blue" onClick={handleSubmit}>
+
+        <ModalFooter className="bg-opacity-100 shadow-lg">
+          <Button colorScheme="blue" onClick={handleSubmit} mr={3}>
             Submit Proposal
           </Button>
-          <Button variant="ghost" onClick={onClose}>Cancel</Button>
+          <Button  colorScheme="blue" variant="ghost" onClick={onClose}>
+            Cancel
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

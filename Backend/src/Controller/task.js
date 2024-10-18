@@ -2,21 +2,32 @@ import ApiResponse from "../utils/ApiResponse.js";
 import apierror from "../utils/ApiError.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import {Task} from "../models/task.js";
+import {Issue} from "../models/issue.js";
 import {Proposal} from "../models/proposal.js";
 
 const createTask = asyncHandler(async (req, res) => {
     const { issue_id, task_description, task_cost, task_estimate_days, task_location, proposal_id } = req.body;
 
-    if ([issue_id, task_description, task_cost, task_estimate_days, task_location].some((field) => field?.trim() === '')) {
+    if ([issue_id, task_description, task_cost, task_estimate_days, task_location].some((field) => typeof field === 'string' && field.trim() === '')) {
         throw new apierror(400, "Please fill all the fields");
     }
-
+    
     const proposal = await Proposal.findById(proposal_id);
     if (!proposal) {
         throw new apierror(404, "Proposal not found");
     }
 
     const assigned_to = proposal.solution_provider_id;
+
+    const updatedIssue = await Issue.findByIdAndUpdate(
+        issue_id,
+        { status: 'In Progress' },
+        { new: true }
+    );
+
+    if (!updatedIssue) {
+        throw new apierror(500, "Error in updating issue status");
+    }
 
     const task = await Task.create({
         issue_id: issue_id,

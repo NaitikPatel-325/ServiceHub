@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Input, Textarea } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Input, Textarea, FormControl, FormLabel } from '@chakra-ui/react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
@@ -9,22 +10,23 @@ interface AddIssueModalProps {
 }
 
 const AddIssueModal: React.FC<AddIssueModalProps> = ({ isOpen, onClose}) => {
+  const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
   const [status, setStatus] = useState('Reported');
   const [photos, setPhotos] = useState<File[]>([]);
-  const [video, setVideo] = useState<File | null>(null); 
+  const [video, setVideo] = useState<File | null>(null);
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setPhotos(Array.from(e.target.files)); 
+      setPhotos(Array.from(e.target.files));
     }
   };
 
   const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setVideo(e.target.files[0]); 
+      setVideo(e.target.files[0]);
     }
   };
 
@@ -43,71 +45,104 @@ const AddIssueModal: React.FC<AddIssueModalProps> = ({ isOpen, onClose}) => {
       formData.append('video', video);
     }
 
-      await axios.post("http://localhost:3000/issue", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data", 
-        },
-        withCredentials: true,
-      })
+    await axios.post("http://localhost:3000/issue", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      withCredentials: true,
+    })
       .then((res) => {
         console.log("Issue added successfully:", res.data);
         toast.success("Issue added successfully");
-        onClose(); 
+        onClose();
+        navigate(`/issue/`);
       })
       .catch((error) => {
         console.error("Error adding issue:", error);
         toast.error("Failed to add issue");
       });
-      
-    
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Add New Issue</ModalHeader>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <ModalOverlay bg='none' backdropFilter='auto' backdropInvert='15%' backdropBlur='2px' />
+      <ModalContent borderRadius={10} bg={"rgb(39 39 42)"} color="white">
+        <ModalHeader className="shadow-lg">Add New Issue</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
-          <Input
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            mb={4}
-          />
-          <Textarea
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            mb={4}
-          />
-          <Input
-            placeholder="Location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            mb={4}
-          />
+        <ModalBody className="shadow-lg">
+          <FormControl mb={4}>
+            <FormLabel color="white">Title</FormLabel>
+            <Input
+              placeholder="Enter issue title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              bg="gray.800"
+              border="none"
+              focusBorderColor="blue.500"
+              color="white"
+            />
+          </FormControl>
 
-          <Input
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={handlePhotoChange}
-            mb={4}
-          />
+          <FormControl mb={4}>
+            <FormLabel color="white">Description</FormLabel>
+            <Textarea
+              placeholder="Enter issue description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              bg="gray.800"
+              border="none"
+              focusBorderColor="blue.500"
+              color="white"
+            />
+          </FormControl>
 
-          <Input
-            type="file"
-            accept="video/*"
-            onChange={handleVideoChange}
-            mb={4}
-          />
+          <FormControl mb={4}>
+            <FormLabel color="white">Location</FormLabel>
+            <Input
+              placeholder="Enter issue location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              bg="gray.800"
+              border="none"
+              focusBorderColor="blue.500"
+              color="white"
+            />
+          </FormControl>
+
+          <FormControl mb={4}>
+            <FormLabel color="white">Photos</FormLabel>
+            <Input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handlePhotoChange}
+              bg="gray.800"
+              border="none"
+              focusBorderColor="blue.500"
+              color="white"
+            />
+          </FormControl>
+
+          <FormControl mb={4}>
+            <FormLabel color="white">Video</FormLabel>
+            <Input
+              type="file"
+              accept="video/*"
+              onChange={handleVideoChange}
+              bg="gray.800"
+              border="none"
+              focusBorderColor="blue.500"
+              color="white"
+            />
+          </FormControl>
         </ModalBody>
-        <ModalFooter>
-          <Button colorScheme="blue" onClick={handleSubmit}>
+        <ModalFooter className="bg-opacity-100 shadow-lg">
+          <Button isLoading={false} colorScheme="blue" onClick={handleSubmit} mr={3}>
             Add Issue
           </Button>
-          <Button variant="ghost" onClick={onClose}>Cancel</Button>
+          <Button variant="ghost" onClick={onClose} colorScheme="blue">
+            Cancel
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

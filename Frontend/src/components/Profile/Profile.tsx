@@ -43,7 +43,7 @@ const Profile: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            // Make a PUT request to update the user profile data
+            
             const response = await axios.put('http://localhost:3000/user/update', formData, {
                 headers: {
                     'Content-Type': 'application/json',
