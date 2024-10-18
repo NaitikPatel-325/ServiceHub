@@ -3,7 +3,6 @@ import { NavLink, useLocation } from "react-router-dom";
 import { useDisclosure } from "@chakra-ui/react";
 import Login from "./Auth/Login";
 import Register from "./Auth/Register";
-import Profile from "./Profile/Profile";
 
 import { Avatar } from "@chakra-ui/react";
 import {

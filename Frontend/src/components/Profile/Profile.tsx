@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronRight, Edit, User, FileText, Phone, Mail, MapPin } from 'lucide-react';
+import { ChevronRight, User, FileText, Phone, Mail, MapPin } from 'lucide-react';
 import { useSelector, useDispatch } from "react-redux";
 import axios from 'axios';
 
