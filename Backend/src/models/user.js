@@ -49,6 +49,14 @@ const userSchema = new mongoose.Schema({
         type:String,
         default:""
     },
+    profession:{
+        type:String,
+        default:""
+    },
+    year_of_experience:{
+        type:Number,
+        default:0
+    },
 },{
     timestamps:true
 });

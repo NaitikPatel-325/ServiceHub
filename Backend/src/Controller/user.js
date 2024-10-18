@@ -189,11 +189,30 @@ const updateuser = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, { user }));
 });
 
+const changeroletoprofessional = asyncHandler(async (req, res) => {
+    const id = req.user._id;
+    // const user = await User.findByIdAndUpdate(id, { role: "professional"}, { new: true });
+
+    const user= await User.findById(id);
+    user.role = "professional";
+    user.profession = req.body.profession;
+    user.year_of_experience = req.body.year_of_experience;
+
+    await user.save();
+
+    if (!user) {
+        throw new apierror(404, "No user found");
+    }
+
+    return res.status(200).json(new ApiResponse(200, { user }));
+});
+
 export {
     loginuser,
     register,
     refreshToken,
     logoutuser,
     IsLoggedIn,
-    updateuser
+    updateuser,
+    changeroletoprofessional
 }
