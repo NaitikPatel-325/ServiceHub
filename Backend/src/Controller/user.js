@@ -145,18 +145,18 @@ const refreshToken = asyncHandler(async (req, res) => {
 
 const logoutuser = asyncHandler(async (req, res) => {
     // console.log(req.cookies);
-    const options = {
-        httpOnly:true,
-        secure:true
-    }
+    try{
+        res.status(200).cookie("token",null, { expires: new Date(Date.now()), httpOnly: true }).json({
+            success: true,
+            message:"Logout Successfully"
+        })
 
-    return res
-    .status(200)
-    .cookie("refreshToken", "", options) // Set refreshToken to an empty string
-    .cookie("accessToken", "", options)  // Set accessToken to an empty string
-    .json(new ApiResponse(200, "User logged out, tokens set to empty."));
-  
-    
+    }catch(err){
+        res.status(500).json({
+            success: false,
+            error: err.message
+        })
+    }
 });
 
 const IsLoggedIn = asyncHandler(async (req, res) => {
@@ -166,10 +166,34 @@ const IsLoggedIn = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200,{user},"user is there"));
 });
 
+const updateuser = asyncHandler(async (req, res) => {
+    const {email, username, phone_number, address } = req.body;
+    const id= req.user._id;
+
+    console.log(req.body);
+
+    if ([id, email, username, phone_number, address].some(field => field?.trim() === '')) {
+        throw new apierror(400, "Please fill all the fields");
+    }
+
+    const user = await User.findByIdAndUpdate(
+        id,
+        { email, username, phone_number, address },
+        { new: true }
+    );
+
+    if (!user) {
+        throw new apierror(404, "No user found");
+    }
+
+    return res.status(200).json(new ApiResponse(200, { user }));
+});
+
 export {
     loginuser,
     register,
     refreshToken,
     logoutuser,
-    IsLoggedIn
+    IsLoggedIn,
+    updateuser
 }

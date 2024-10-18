@@ -1,8 +1,9 @@
-import React  from "react";
+import React, { useEffect }  from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useDisclosure } from "@chakra-ui/react";
 import Login from "./Auth/Login";
 import Register from "./Auth/Register";
+import Profile from "./Profile/Profile";
 
 import { Avatar } from "@chakra-ui/react";
 import {
@@ -75,12 +76,32 @@ export default function Nav({ toggleLogin, isLoggedIn , routes , user }: any) {
       toast.error("Error");
     }
 
-
-  
   };
 
+  useEffect(() => {
+    async function loadUser() {
+      try {
+        const res = await axios.get("http://localhost:3000/user/check", {
+          withCredentials: true,
+        });
+        console.log(res.data);
+        if (res.data) {
+          dispatch({ type: "SET_USER", payload: res.data.data.user });
+          toggleLogin();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    loadUser();
+  }
+  , []);
+
+  console.log(user);
+
   const Profile = () => {
-    console.log("Profile");
+    window.location.href = "/profile";
   }
 
   return (
@@ -118,26 +139,33 @@ export default function Nav({ toggleLogin, isLoggedIn , routes , user }: any) {
               </button>
             )}
             {isLoggedIn && (
-              <Menu>
-                <MenuButton className="border-2 border-white-500 rounded-full">
-                  <Avatar name="Dan Abrahmov" src={"/avatar.jpeg"} size={"sm"}/>
-                </MenuButton>
-                <MenuList bg={"gray.900"}>
-                  <CustomNavLink
-                    className=""
-                    activeClassName="text-blue-400"
-                    to="/profile"
-                  >
-                    <MenuItem bg={"gray.900"}>{user?.name}</MenuItem>
-                  </CustomNavLink>
-                  <MenuItem onClick={Profile} bg={"gray.900"}>
-                    <span>Profile</span>
-                  </MenuItem>
-                  <MenuItem onClick={logout} bg={"gray.900"}>
-                    <span className="text-red-500">Logout</span>
-                  </MenuItem>
-                </MenuList>
-              </Menu>
+                <Menu>
+                    <MenuButton className="border-2 border-white-500 rounded-full">
+                        {/* Display the avatar, if exists */}
+                        <Avatar
+                            name={user?.name || "User"}
+                            src={user?.avatar || ""}
+                            size={"sm"}
+                        />
+                    </MenuButton>
+                    <MenuList bg={"gray.900"}>
+                        <CustomNavLink
+                            className=""
+                            activeClassName="text-blue-400"
+                            to="/profile"
+                        >
+                            <MenuItem bg={"gray.900"}>{user?.name}</MenuItem>
+                        </CustomNavLink>
+                        {/* Navigate to /profile on profile click */}
+                        <MenuItem onClick={Profile} bg={"gray.900"}>
+                            <span>Profile</span>
+                        </MenuItem>
+                        {/* Logout option */}
+                        <MenuItem onClick={logout} bg={"gray.900"}>
+                            <span className="text-red-500">Logout</span>
+                        </MenuItem>
+                    </MenuList>
+                </Menu>
             )}
 
             <div className="block md:hidden my-auto">

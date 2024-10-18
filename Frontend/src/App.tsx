@@ -8,6 +8,7 @@ import { Toaster } from 'react-hot-toast';
 import IssueTracker from "./components/issue/issue";
 import axios from "axios";
 import IssueDetails from "./components/issue/IssueDetails";
+import Profile from "./components/Profile/Profile";
 
 function App() {
     const dispatch = useDispatch()
@@ -62,6 +63,7 @@ function App() {
         <Route path="/" element={<Home />} />  
         <Route path="/issues" element={<IssueTracker />} />
         <Route path="/issue/:id" element={< IssueDetails />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
 
       </Router>
