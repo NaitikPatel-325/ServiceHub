@@ -14,7 +14,7 @@ const AddIssueModal: React.FC<AddIssueModalProps> = ({ isOpen, onClose}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
-  const [status, setStatus] = useState('Reported');
+  const [status] = useState('Reported');
   const [photos, setPhotos] = useState<File[]>([]);
   const [video, setVideo] = useState<File | null>(null);
 

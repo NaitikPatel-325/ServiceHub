@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronRight, User, FileText, Phone, Mail, MapPin } from 'lucide-react';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import axios from 'axios';
 
 const Profile: React.FC = () => {
     const user = useSelector((state: any) => state?.user);
-    const dispatch = useDispatch();
 
     const [isEditing, setIsEditing] = useState(false);
 
