@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronRight, Edit, User, FileText, Phone, Mail, MapPin } from 'lucide-react';
-import { useSelector, useDispatch } from "react-redux";
+import { ChevronRight, User, FileText, Phone, Mail, MapPin } from 'lucide-react';
+import { useSelector } from "react-redux";
 import axios from 'axios';
 
 const Profile: React.FC = () => {
     const user = useSelector((state: any) => state?.user);
-    const dispatch = useDispatch();
 
     console.log('User:', user);
     const [isEditing, setIsEditing] = useState(false);
@@ -47,7 +46,7 @@ const Profile: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            // Make a PUT request to update the user profile data
+            
             const response = await axios.put('http://localhost:3000/user/update', formData, {
                 headers: {
                     'Content-Type': 'application/json',

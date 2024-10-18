@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Search, ChevronDown } from 'lucide-react';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import AddIssueModal from './AddIssue.tsx';
 
 interface Issue {
@@ -17,19 +19,20 @@ interface Issue {
 }
 
 const statusColors: { [key: string]: string } = {
-  'Reported': 'bg-yellow-600',
+  Reported: 'bg-yellow-600',
   'In Progress': 'bg-blue-600',
-  'Resolved': 'bg-green-600',
-  'Closed': 'bg-gray-600',
+  Resolved: 'bg-green-600',
+  Closed: 'bg-gray-600',
 };
 
 export default function IssueTracker() {
-  const user = useSelector((state:any) => state?.user?.user)
+  const user = useSelector((state: any) => state?.user?.user);
   console.log(user?.role);
   const [searchTerm, setSearchTerm] = useState('');
   const [issues, setIssues] = useState<Issue[]>([]);
   const [selectedStatus, setSelectedStatus] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchIssues() {
@@ -48,6 +51,20 @@ export default function IssueTracker() {
     fetchIssues();
   }, []);
 
+  const handleIssueClick = (issue: Issue) => {
+    if (issue.status === 'Reported') {
+
+      navigate(
+        user?.role === 'goverment'
+          ? `/issue/proposal/${issue._id}`
+          : `/issue/${issue._id}`
+      );
+    } else {
+      
+      toast.info('This issue is already assigned or closed.');
+    }
+  };
+
   const filteredIssues = issues.filter((issue) => {
     const title = issue.title || '';
     if (selectedStatus === '') {
@@ -62,6 +79,8 @@ export default function IssueTracker() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
+      <ToastContainer />
+
       <h1 className="text-4xl font-bold mb-8 text-center">Issue Tracker</h1>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -87,14 +106,10 @@ export default function IssueTracker() {
           <div className="space-y-4">
             {filteredIssues.length > 0 ? (
               filteredIssues.map((issue) => (
-                <Link
-                  to={
-                    user?.role === 'goverment'
-                      ? `/issue/proposal/${issue._id}`
-                      : `/issue/${issue._id}`
-                    }
+                <div
                   key={issue._id}
-                  className="block bg-gray-800 rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow focus:ring focus:ring-blue-500 focus:outline-none"
+                  className="block bg-gray-800 rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow focus:ring focus:ring-blue-500 focus:outline-none cursor-pointer"
+                  onClick={() => handleIssueClick(issue)} // Handle issue click based on status
                 >
                   <div className="flex-grow">
                     <h3 className="text-xl font-medium text-blue-400 mb-1 cursor-pointer hover:underline">
@@ -119,7 +134,7 @@ export default function IssueTracker() {
                       Reported on {new Date(issue.createdAt).toLocaleString()}
                     </p>
                   </div>
-                </Link>
+                </div>
               ))
             ) : (
               <p className="text-gray-400">No issues found</p>

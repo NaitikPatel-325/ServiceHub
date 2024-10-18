@@ -6,10 +6,6 @@ const proposalSchema = new mongoose.Schema({
     ref: 'Issue', 
     required: true
   },
-  professional_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  },
   proposal_description: {
     type: String,
     required: true,

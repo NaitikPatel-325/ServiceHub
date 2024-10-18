@@ -15,6 +15,10 @@ const taskSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  professional_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
   task_cost:{
     type: String,
     required: true

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate ,useParams} from 'react-router-dom';
 
 interface Proposal {
   _id: string;
@@ -15,6 +15,7 @@ interface Proposal {
 }
 
 const ProposalList = () => {
+  const navigate = useNavigate();
   const { id: issueId } = useParams<{ id: string }>();   
   const [proposals, setProposals] = useState<Proposal[]>([]);
   const [loading, setLoading] = useState(true);
@@ -60,6 +61,7 @@ const ProposalList = () => {
 
       console.log('Task created:', response.data);
       alert('Proposal accepted and task created successfully!');
+      navigate(`/issues/`);
     } catch (error) {
       console.error('Error accepting proposal:', error);
       alert('Error accepting the proposal. Please try again.');
