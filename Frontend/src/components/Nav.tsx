@@ -83,7 +83,7 @@ export default function Nav({ toggleLogin, isLoggedIn , routes , user }: any) {
         const res = await axios.get("http://localhost:3000/user/check", {
           withCredentials: true,
         });
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data) {
           dispatch({ type: "SET_USER", payload: res.data.data.user });
           toggleLogin();

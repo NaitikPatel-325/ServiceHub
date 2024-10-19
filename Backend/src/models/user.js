@@ -3,33 +3,32 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const userSchema = new mongoose.Schema({
-    
     username: {
         type: String,
-        required:[true,"Username is required"],
+        required: [true, "Username is required"],
         unique: true,
-        trim:true,
-        index:true
+        trim: true,
+        index: true
     },
-    email:{
-        type:String,
-        required:true,
-        unique:true,
-        lowercase:true,
-        trim:true
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        lowercase: true,
+        trim: true
     },
-    password:{
-        type:String,
-        required:[true,"Password is required"],
+    password: {
+        type: String,
+        required: [true, "Password is required"],
     },
     phone_number: {
         type: String,
         maxlength: 15,
-        required: [true,"Phone number is required"],
+        required: [true, "Phone number is required"],
     },
     role: {
         type: String,
-        enum: ['citizen', 'goverment', 'professional'],
+        enum: ['citizen', 'government', 'professional'],
         default: 'citizen'
     },
     address: {
@@ -37,30 +36,38 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         maxlength: 255
     },
-    refreshToken:{
-        type:String,
+    refreshToken: {
+        type: String,
     },
-    avatar:{
-        type:String,
-        default:"",
-        required:true
+    avatar: {
+        type: String,
+        default: "",
+        required: true
     },
-    certificate:{
-        type:String,
-        default:""
+    certificate: {
+        type: String,
+        default: ""
     },
-    profession:{
-        type:String,
-        default:""
+    professionType: { 
+        type: String,
+        default: ""
     },
-    year_of_experience:{
-        type:Number,
-        default:0
+    experience: {  
+        type: Number,
+        default: 0
     },
-},{
-    timestamps:true
+    professionStatus: { 
+        type: String,
+        enum: ['citizenPending','pending', 'approved', 'rejected'],
+        default: 'citizenPending'
+    },
+    professionDescription: {
+        type: String,
+        default: ""
+    },
+}, {
+    timestamps: true
 });
-
 userSchema.pre("save",async function(next){
     if(!this.isModified("password")){
         next();

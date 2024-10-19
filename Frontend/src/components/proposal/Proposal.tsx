@@ -11,8 +11,7 @@ interface AddProposalModalProps {
 }
 
 const AddProposalModal: React.FC<AddProposalModalProps> = ({ isOpen, onClose, issueId }) => {
-  const user = useSelector((state: any) => state?.user);
-  console.log(user);
+  const user = useSelector((state: any) => state?.user?.user);
 
   const [proposalDescription, setProposalDescription] = useState('');
   const [costEstimate, setCostEstimate] = useState('');
