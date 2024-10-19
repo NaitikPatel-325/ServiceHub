@@ -37,14 +37,12 @@ app.use('/task',authenticateUser,taskRouter);
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 
-// WebSocket connection handling
 wss.on('connection', (ws) => {
     console.log('New client connected');
 
     ws.on('message', (message) => {
         console.log(`Received message: ${message}`);
 
-        // Broadcast message to all connected clients
         wss.clients.forEach(client => {
             if (client.readyState === client.OPEN) {
                 client.send(message);

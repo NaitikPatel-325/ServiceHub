@@ -12,17 +12,14 @@ const WebSocketComponent: React.FC = () => {
         setWs(socket);
 
         socket.onmessage = (event) => {
-            // Check if the event data is a Blob
             if (event.data instanceof Blob) {
                 console.log('Received Blob:', event.data);
-                // If you want to convert the Blob to text
                 const reader = new FileReader();
                 reader.onload = () => {
                     setMessages((prevMessages) => [...prevMessages, reader.result as string]);
                 };
                 reader.readAsText(event.data);
             } else {
-                // Assuming event.data is text
                 setMessages((prevMessages) => [...prevMessages, event.data]);
             }
         };
