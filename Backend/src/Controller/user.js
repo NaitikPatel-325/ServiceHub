@@ -212,6 +212,11 @@ const changeroletoprofessional = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, { user }));
 });
 
+const getProfessional = asyncHandler(async (req, res) => {
+    const professionals = await User.find({ role: "professional" }).select("-password -refreshToken");
+    console.log(professionals);
+    return res.status(200).json(new ApiResponse(200, { professionals }));
+});
 
 const RequestToProfessional = asyncHandler(async (req, res) => {
     const userId = req.user._id; 
@@ -264,5 +269,6 @@ export {
     updateuser,
     changeroletoprofessional,
     RequestToProfessional,
-    getProfessionalRequest
+    getProfessionalRequest,
+    getProfessional
 }

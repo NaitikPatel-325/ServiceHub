@@ -8,8 +8,10 @@ import { Toaster } from 'react-hot-toast';
 import IssueTracker from "./components/issue/issue";
 import axios from "axios";
 import IssueDetails from "./components/issue/IssueDetails";
+import AssignProfessional from "./components/issue/AssignProfessional";
 import Profile from "./components/Profile/Profile";
 import ProposalList from "./components/proposal/ProposalList";
+import WebSocketComponent from "./components/websocket";
 
 function App() {
     const dispatch = useDispatch()
@@ -46,6 +48,9 @@ function App() {
     {
       path:"/issues",
       name : "Issues",
+    },{
+      path:"/websocket",
+      name : "Call",
     }
   ]
 
@@ -65,6 +70,8 @@ function App() {
         <Route path="/issues" element={<IssueTracker />} />
         <Route path="/issue/:id" element={< IssueDetails />} />
         <Route path="issue/proposal/:id" element={< ProposalList/>} />
+        <Route path="/assignprofessional/:id" element={<AssignProfessional />} />
+        <Route path="/websocket" element={<WebSocketComponent />} />
         <Route path="/about" element={<div> Hii</div>} />  
         <Route path="/profile" element={<Profile />} />
       </Routes>

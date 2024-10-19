@@ -58,8 +58,8 @@ const userSchema = new mongoose.Schema({
     },
     professionStatus: { 
         type: String,
-        enum: ['citizenPending','pending', 'approved', 'rejected'],
-        default: 'citizenPending'
+        enum: ['citizen','pending', 'approved', 'rejected'],
+        default: 'citizen'
     },
     professionDescription: {
         type: String,

@@ -109,7 +109,7 @@ export default function IssueTracker() {
                 <div
                   key={issue._id}
                   className="block bg-gray-800 rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow focus:ring focus:ring-blue-500 focus:outline-none cursor-pointer"
-                  onClick={() => handleIssueClick(issue)} // Handle issue click based on status
+                  onClick={() => handleIssueClick(issue)} 
                 >
                   <div className="flex-grow">
                     <h3 className="text-xl font-medium text-blue-400 mb-1 cursor-pointer hover:underline">
@@ -118,6 +118,18 @@ export default function IssueTracker() {
                     <p className="text-sm text-gray-300 mb-3">
                       {issue.description}
                     </p>
+
+                     
+                    {user?.role === 'goverment' &&  (issue.status === 'In Progress' ) &&  (
+                        <a 
+                          href={`/assignprofessional/${issue._id}`} 
+                          className="px-3 py-1 rounded-full text-xs font-semibold bg-green-600 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200"
+                          aria-label="Assign Professional"
+                        >
+                          Assign Professional
+                        </a>
+                      )}
+
                     <div className="flex items-center space-x-2 mb-2">
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColors[issue.status]}`}
@@ -129,6 +141,8 @@ export default function IssueTracker() {
                           {issue.location}
                         </span>
                       )}
+                     
+
                     </div>
                     <p className="text-sm text-gray-400">
                       Reported on {new Date(issue.createdAt).toLocaleString()}

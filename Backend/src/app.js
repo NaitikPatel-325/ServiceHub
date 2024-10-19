@@ -7,6 +7,8 @@ import proposalRouter from './routes/proposalRouter.js';
 import taskRouter from './routes/taskRouter.js';
 import authenticateUser from './middleware/auth.js';
 import dotenv from 'dotenv';
+import { WebSocketServer } from 'ws';
+import http from 'http';
 
 dotenv.config();
 
@@ -30,4 +32,29 @@ app.use('/issue',authenticateUser,issuseRouter);
 app.use('/proposal',authenticateUser,proposalRouter);
 app.use('/task',authenticateUser,taskRouter);
 
-export default app;
+
+
+const server = http.createServer(app);
+const wss = new WebSocketServer({ server });
+
+// WebSocket connection handling
+wss.on('connection', (ws) => {
+    console.log('New client connected');
+
+    ws.on('message', (message) => {
+        console.log(`Received message: ${message}`);
+
+        // Broadcast message to all connected clients
+        wss.clients.forEach(client => {
+            if (client.readyState === client.OPEN) {
+                client.send(message);
+            }
+        });
+    });
+
+    ws.on('close', () => {
+        console.log('Client disconnected');
+    });
+});
+
+export { server, app };
