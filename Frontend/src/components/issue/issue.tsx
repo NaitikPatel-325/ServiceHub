@@ -6,6 +6,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddIssueModal from './AddIssue.tsx';
+import { motion } from 'framer-motion'; // Import motion from framer-motion
 
 interface Issue {
   _id: string;
@@ -37,7 +38,7 @@ export default function IssueTracker() {
   useEffect(() => {
     async function fetchIssues() {
       try {
-        const response = await axios.get('http://localhost:3000/issue', {
+        const response = await axios.get('https://servicehub-k17j.onrender.com/issue', {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -53,14 +54,12 @@ export default function IssueTracker() {
 
   const handleIssueClick = (issue: Issue) => {
     if (issue.status === 'Reported') {
-
       navigate(
         user?.role === 'goverment'
           ? `/issue/proposal/${issue._id}`
           : `/issue/${issue._id}`
       );
     } else {
-      
       toast.info('This issue is already assigned or closed.');
     }
   };
@@ -78,7 +77,13 @@ export default function IssueTracker() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-8">
+    <motion.div
+      initial={{ opacity: 0, y: -300, scale: 0.4 }} // Initial animation properties
+      animate={{ opacity: 1, y: 0, scale: 1 }} // Animate to these properties
+      exit={{ opacity: 0, x: -400 }} // Animation when exiting
+      transition={{ duration: 1.5, type: 'spring' }} // Transition properties
+      className="min-h-screen bg-gray-900 text-white p-8"
+    >
       <ToastContainer />
 
       <h1 className="text-4xl font-bold mb-8 text-center">Issue Tracker</h1>
@@ -119,7 +124,6 @@ export default function IssueTracker() {
                       {issue.description}
                     </p>
 
-                     
                     {user?.role === 'goverment' &&  (issue.status === 'In Progress' ) &&  (
                         <a 
                           href={`/assignprofessional/${issue._id}`} 
@@ -141,8 +145,6 @@ export default function IssueTracker() {
                           {issue.location}
                         </span>
                       )}
-                     
-
                     </div>
                     <p className="text-sm text-gray-400">
                       Reported on {new Date(issue.createdAt).toLocaleString()}
@@ -182,6 +184,6 @@ export default function IssueTracker() {
       </div>
 
       <AddIssueModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </div>
+    </motion.div>
   );
 }

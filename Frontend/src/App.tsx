@@ -21,7 +21,7 @@ function App() {
     const loadUser = async () => {
     
       try {
-        const res = await axios.get("http://localhost:3000/user/check", { withCredentials: true });
+        const res = await axios.get("https://servicehub-k17j.onrender.com/user/check", { withCredentials: true });
         console.log(res.data);
         if (res.data) {
           dispatch({ type: "SET_USER", payload: res.data.data.user });
@@ -50,7 +50,7 @@ function App() {
       name : "Issues",
     },{
       path:"/websocket",
-      name : "Call",
+      name : "chat",
     }
   ]
 

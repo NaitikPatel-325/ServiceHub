@@ -66,7 +66,7 @@ export default function Login({
 
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:3000/user/login", data, {  
+      const res = await axios.post("https://servicehub-k17j.onrender.com/user/login", data, {  
         withCredentials: true 
       });
       // console.log(res.data);

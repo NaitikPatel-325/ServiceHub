@@ -37,7 +37,7 @@ const Profile: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await axios.put('http://localhost:3000/user/update', formData, {
+            const response = await axios.put('https://servicehub-k17j.onrender.com/user/update', formData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

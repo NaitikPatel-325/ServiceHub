@@ -36,7 +36,7 @@ const AddProposalModal: React.FC<AddProposalModalProps> = ({ isOpen, onClose, is
     }
 
     try {
-      await axios.post("http://localhost:3000/proposal", formData, {
+      await axios.post("https://servicehub-k17j.onrender.com/proposal", formData, {
         headers: {
           "Content-Type": "multipart/form-data", 
         },

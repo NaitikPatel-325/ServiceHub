@@ -8,7 +8,7 @@ const WebSocketComponent: React.FC = () => {
     const [ws, setWs] = useState<WebSocket | null>(null);
 
     useEffect(() => {
-        const socket = new WebSocket('ws://localhost:3000'); 
+        const socket = new WebSocket('wss://servicehub-k17j.onrender.com'); 
         setWs(socket);
 
         socket.onmessage = (event) => {
