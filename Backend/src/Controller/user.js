@@ -96,7 +96,6 @@ const loginuser = asyncHandler(async (req, res) => {
         httpOnly: true,
         secure: true,
         sameSite: 'none',
-        domain: 'servicehub-k17j.onrender.com',
     };
     console.log(loggedinuser); 
     return res
