@@ -111,7 +111,6 @@ export default function Nav({ toggleLogin, isLoggedIn , routes , user }: any) {
             to="/"
             className="flex items-center space-x-3 rtl:space-x-reverse"
           >
-            {/* <img src="/logo.png" className="md:h-12 h-6" alt="vite" /> */}
             <span className="text-white font-semibold text-4xl dark:text-white">
               ServiceHub
             </span>
