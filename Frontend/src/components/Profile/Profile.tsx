@@ -178,7 +178,7 @@ const Profile: React.FC = () => {
                     </div>
                 </div>
     
-                {user?.user?.role === 'professional' ? (
+                {user?.user?.role === 'professional' && user?.user?.role !== 'goverment' ? (
                     <div className="bg-gray-50 rounded-lg p-8">
                         <h2 className="text-3xl font-semibold mb-6 text-gray-700">Professional Information</h2>
                         <div className="space-y-4">
@@ -204,7 +204,7 @@ const Profile: React.FC = () => {
                     </div>
                 ) : (
                     <div className="mt-8">
-                        {!isProfessionalRegistration ? (
+                        {!isProfessionalRegistration && user?.user?.role !== 'goverment'  &&
                             <button
                                 type="button"
                                 onClick={handleProfessionalRegistration}
@@ -212,7 +212,8 @@ const Profile: React.FC = () => {
                             > 
                                 Want to register as a professional?
                             </button>
-                        ) : (
+                        }
+                        {isProfessionalRegistration && user?.user?.role !== 'goverment' &&
                             <div className="bg-gray-50 rounded-lg p-8 mt-8">
                             <h2 className="text-3xl font-semibold mb-6 text-black">Professional Registration</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -243,9 +244,10 @@ const Profile: React.FC = () => {
                                     Submit Professional Information
                                 </button>
                             </div>
-                        </div>
+                            </div>
 
-                    )}
+                        }
+                    
                     </div>
                 )}
     
