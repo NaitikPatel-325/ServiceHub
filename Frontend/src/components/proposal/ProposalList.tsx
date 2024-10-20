@@ -24,7 +24,7 @@ const ProposalList = () => {
   useEffect(() => {
     const fetchProposals = async () => {
       try {
-        const response = await axios.get(`https://servicehub-k17j.onrender.com/proposal/${issueId}/solution`, {
+        const response = await axios.get(`http://localhost:3000/proposal/${issueId}/solution`, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -46,7 +46,7 @@ const ProposalList = () => {
   const handleAccept = async (proposal: Proposal) => {
     try {
         
-      const response = await axios.post('https://servicehub-k17j.onrender.com/task', {
+      const response = await axios.post('http://localhost:3000/task', {
         proposal_id: proposal._id,  
         issue_id: proposal.issue_id,
         task_description: proposal.proposal_description,

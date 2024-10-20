@@ -29,7 +29,7 @@ const IssueDetails = () => {
   useEffect(() => {
     const fetchIssueDetails = async () => {
       try {
-        const response = await axios.get(`https://servicehub-k17j.onrender.com/issue/${id}`, {
+        const response = await axios.get(`http://localhost:3000/issue/${id}`, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -50,7 +50,7 @@ const IssueDetails = () => {
   useEffect(() => {
     const checkForUploadedSolution = async () => {
       try {
-        const res = await axios.get(`https://servicehub-k17j.onrender.com/proposal/${id}/solution`, {
+        const res = await axios.get(`http://localhost:3000/proposal/${id}/solution`, {
           headers: {
             'Content-Type': 'application/json',
           },

@@ -38,7 +38,7 @@ export default function IssueTracker() {
   useEffect(() => {
     async function fetchIssues() {
       try {
-        const response = await axios.get('https://servicehub-k17j.onrender.com/issue', {
+        const response = await axios.get('http://localhost:3000/issue', {
           headers: {
             'Content-Type': 'application/json',
           },

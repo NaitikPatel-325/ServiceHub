@@ -16,7 +16,7 @@ export default function RequestProfessional() {
   useEffect(() => {
     const fetchProfessionalRequests = async () => {
       try {
-        const response = await axios.get("https://servicehub-k17j.onrender.com/user/getprofessionalrequest", {
+        const response = await axios.get("http://localhost:3000/user/getprofessionalrequest", {
           withCredentials: true,
         });
         console.log("Fetched requests:", response.data); 

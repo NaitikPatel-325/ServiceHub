@@ -10,7 +10,7 @@ const WebSocketComponent: React.FC = () => {
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const socket = new WebSocket('wss://servicehub-k17j.onrender.com'); 
+        const socket = new WebSocket('ws://localhost:3000'); 
         setWs(socket);
     
         socket.onmessage = (event) => {

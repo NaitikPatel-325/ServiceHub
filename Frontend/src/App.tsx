@@ -21,7 +21,7 @@ function App() {
     const loadUser = async () => {
     
       try {
-        const res = await axios.get("https://servicehub-k17j.onrender.com/user/check", { withCredentials: true });
+        const res = await axios.get("http://localhost:3000/user/check", { withCredentials: true });
         console.log(res.data);
         if (res.data) {
           dispatch({ type: "SET_USER", payload: res.data.data.user });
@@ -51,6 +51,9 @@ function App() {
     },{
       path:"/websocket",
       name : "chat",
+    },{
+      path:"/xyz",
+      name:"asd",
     }
   ]
 
@@ -72,7 +75,7 @@ function App() {
         <Route path="issue/proposal/:id" element={< ProposalList/>} />
         <Route path="/assignprofessional/:id" element={<AssignProfessional />} />
         <Route path="/websocket" element={<WebSocketComponent />} />
-        <Route path="/about" element={<div> Hii</div>} />  
+        <Route path="/about" element={<div> Hii</div>} />  x
         <Route path="/profile" element={<Profile />} />
       </Routes>
 

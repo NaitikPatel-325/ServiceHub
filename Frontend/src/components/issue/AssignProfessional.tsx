@@ -23,7 +23,7 @@ const AssignProfessional: React.FC = () => {
     useEffect(() => {
         const fetchProfessionals = async () => {
             try {
-                const response = await axios.get(`https://servicehub-k17j.onrender.com/user/getProfessionals`, {
+                const response = await axios.get(`http://localhost:3000/user/getProfessionals`, {
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -43,7 +43,7 @@ const AssignProfessional: React.FC = () => {
 
     const handleAssign = async (professionalId: string) => {
         try {
-            const response = await axios.post(`https://servicehub-k17j.onrender.com/task/assignProfessional`, {
+            const response = await axios.post(`http://localhost:3000/task/assignProfessional`, {
                 issueId,
                 professionalId,
             },
