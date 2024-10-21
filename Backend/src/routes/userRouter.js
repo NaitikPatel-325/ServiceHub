@@ -17,7 +17,7 @@ router.route('/register').post(
 router.route('/login').post(loginuser);
 router.route('/refreshToken').post(refreshToken); 
 router.route("/getProfessionals").get(authenticateUser,getProfessional);
-router.route("/logout").post(logoutuser);
+router.route("/logout").post(authenticateUser,logoutuser);
 router.route("/check").get(authenticateUser,IsLoggedIn);
 router.route("/update").put(authenticateUser,updateuser);
 router.route("/requesttoprofessional").post(authenticateUser, upload.fields([

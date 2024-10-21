@@ -145,19 +145,23 @@ const refreshToken = asyncHandler(async (req, res) => {
 });
 
 const logoutuser = asyncHandler(async (req, res) => {
-    // console.log(req.cookies);
-    try{
-        res.status(200).cookie("token",null, { expires: new Date(Date.now()), httpOnly: true }).json({
+    console.log("inside logout");
+    try {
+        res
+          .status(200)
+          .cookie("accessToken", null, { expires: new Date(Date.now()), httpOnly: true })
+          .cookie("refreshToken", null, { expires: new Date(Date.now()), httpOnly: true })
+          .json({
             success: true,
-            message:"Logout Successfully"
-        })
-
-    }catch(err){
+            message: "Logout successfully",
+          });
+    } catch (err) {
+        console.log(err);
         res.status(500).json({
-            success: false,
-            error: err.message
-        })
-    }
+          success: false,
+          error: err.message,
+        });
+      }
 });
 
 const IsLoggedIn = asyncHandler(async (req, res) => {
