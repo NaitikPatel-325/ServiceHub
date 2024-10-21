@@ -33,3 +33,7 @@ The **Citizen-Government Professional Interaction Platform (CGPIP)** is a centra
 1. Clone the repository:
    ```bash
    git clone https://github.com/yourusername/CGPIP.git
+
+![Websit photos](./asset/Home.png)
+![image](./asset/chat.png)
+![image](./asset/Task.png)
