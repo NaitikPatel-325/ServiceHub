@@ -1,4 +1,4 @@
-import app from './app.js';
+import { server } from './app.js';
 import connectdb from './db/index.js';
 import dotenv from 'dotenv';
 dotenv.config({
@@ -6,13 +6,13 @@ dotenv.config({
 })
 connectdb()
 .then(()=>{
-    app.listen(process.env.PORT,()=>{
+    server.listen(process.env.PORT,()=>{
         console.log(process.env.CORS_ORIGIN);
         console.log(`Server is running on port ${process.env.PORT}`);
     }) 
 })
 .catch((error)=>{
-    app.on('error', (error)=>{
+    server.on('error', (error)=>{
         console.error('Error starting server');
         console.error(error);
     })

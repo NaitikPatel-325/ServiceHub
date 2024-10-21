@@ -4,6 +4,42 @@ import asyncHandler from "../utils/asyncHandler.js";
 import {Task} from "../models/task.js";
 import {Issue} from "../models/issue.js";
 import {Proposal} from "../models/proposal.js";
+import mongoose from "mongoose";
+
+
+const getTaskbyProfessionalId = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    console.log(id);
+    // const obj = new mongoose.Types.ObjectId(id);
+    const task = await Task.find({ assigned_to: id });
+    
+    if (!task || task.length === 0) {
+      throw new apierror(404, "No task found");
+    }
+  
+    console.log(task);
+
+    return res.status(200).json(new ApiResponse(200, { task }));
+});
+
+const changestatus = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    const task = await Task.findByIdAndUpdate(
+        id,
+        { status: 'Completed' },
+        { new: true }
+    );
+
+    if (!task) {
+
+        throw new apierror(404, "No task found");
+    }
+    
+    return res.status(200).json(new ApiResponse(200, { task }));
+
+});
 
 const createTask = asyncHandler(async (req, res) => {
     const { issue_id, task_description, task_cost, task_estimate_days, task_location, proposal_id } = req.body;
@@ -77,13 +113,30 @@ const updateTask = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200,{task}));
 });
 
-const deleteTask = asyncHandler(async (req, res) => {
-    const {id} = req.params;
-    const task = await Task.findByIdAndDelete(id);
-    if(!task){
-        throw new apierror(404,"No task found");
+const assignProfessional = asyncHandler(async (req, res) => {
+    const { issueId, professionalId } = req.body;
+
+    if (!professionalId || !issueId) {
+        throw new apierror(400, "Please fill all the fields");
     }
-    return res.status(200).json(new ApiResponse(200,{task}));
+
+    const task = await Task.findOneAndUpdate(
+        { issue_id: issueId },
+        { professional_id: professionalId },
+        { new: true } 
+    );
+
+    const updatedIssue = await Issue.findByIdAndUpdate(
+        issueId,
+        { status: 'accepted' },
+        { new: true }
+    );
+
+    if (!task) {
+        throw new apierror(404, "No task found");
+    }
+
+    return res.status(200).json(new ApiResponse(200, { task }));
 });
 
 const getTaskbyId = asyncHandler(async (req, res) => {
@@ -97,15 +150,5 @@ const getTaskbyId = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200,{task}));
 });
 
-const getTaskbyProfessionalId = asyncHandler(async (req, res) => {
-    const {id} = req.params;
-    const task= await Task.find({assigned_to:id});
 
-    if(!task){
-        throw new apierror(404,"No task found");
-    }
-
-    return res.status(200).json(new ApiResponse(200,{task}));
-});
-
-export {createTask,getTasks,getTaskbyId,updateTask,deleteTask,getTaskbyProfessionalId};
+export {createTask,getTasks,getTaskbyId,updateTask,assignProfessional,getTaskbyProfessionalId,changestatus};

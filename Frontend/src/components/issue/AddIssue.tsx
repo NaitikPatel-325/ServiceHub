@@ -9,7 +9,7 @@ interface AddIssueModalProps {
   onClose: () => void;
 }
 
-const AddIssueModal: React.FC<AddIssueModalProps> = ({ isOpen, onClose}) => {
+const AddIssueModal: React.FC<AddIssueModalProps> = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -17,6 +17,7 @@ const AddIssueModal: React.FC<AddIssueModalProps> = ({ isOpen, onClose}) => {
   const [status] = useState('Reported');
   const [photos, setPhotos] = useState<File[]>([]);
   const [video, setVideo] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false); // Adjusted loading state name to lowercase
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -45,22 +46,24 @@ const AddIssueModal: React.FC<AddIssueModalProps> = ({ isOpen, onClose}) => {
       formData.append('video', video);
     }
 
-    await axios.post("http://localhost:3000/issue", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      withCredentials: true,
-    })
-      .then((res) => {
-        console.log("Issue added successfully:", res.data);
-        toast.success("Issue added successfully");
-        onClose();
-        navigate(`/issue/`);
-      })
-      .catch((error) => {
-        console.error("Error adding issue:", error);
-        toast.error("Failed to add issue");
+    setLoading(true); // Set loading to true
+    try {
+      const res = await axios.post("http://localhost:3000/issue", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
       });
+      console.log("Issue added successfully:", res.data);
+      toast.success("Issue added successfully");
+      onClose();
+      navigate(`/issue/`);
+    } catch (error) {
+      console.error("Error adding issue:", error);
+      toast.error("Failed to add issue");
+    } finally {
+      setLoading(false); // Reset loading state in finally block
+    }
   };
 
   return (
@@ -137,7 +140,7 @@ const AddIssueModal: React.FC<AddIssueModalProps> = ({ isOpen, onClose}) => {
           </FormControl>
         </ModalBody>
         <ModalFooter className="bg-opacity-100 shadow-lg">
-          <Button isLoading={false} colorScheme="blue" onClick={handleSubmit} mr={3}>
+          <Button isLoading={loading} colorScheme="blue" onClick={handleSubmit} mr={3}>
             Add Issue
           </Button>
           <Button variant="ghost" onClick={onClose} colorScheme="blue">

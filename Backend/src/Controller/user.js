@@ -94,7 +94,8 @@ const loginuser = asyncHandler(async (req, res) => {
 
     const options = {
         httpOnly: true,
-        secure: true
+        secure: true,
+        sameSite: 'none',
     };
     console.log(loggedinuser); 
     return res
@@ -190,21 +191,74 @@ const updateuser = asyncHandler(async (req, res) => {
 });
 
 const changeroletoprofessional = asyncHandler(async (req, res) => {
-    const id = req.user._id;
-    // const user = await User.findByIdAndUpdate(id, { role: "professional"}, { new: true });
+    const { id } = req.params; 
+    console.log(req.params);
+    // const user= await User.findById(id);
+    // user.role = "professional";
+    // user.profession = req.body.profession;
+    const user = await User.findByIdAndUpdate(
+        id,
+        {
+            role: 'professional',
+            professionStatus: 'approved' 
+        },
+        { new: true }
+    );
 
-    const user= await User.findById(id);
-    user.role = "professional";
-    user.profession = req.body.profession;
-    user.year_of_experience = req.body.year_of_experience;
-
-    await user.save();
 
     if (!user) {
         throw new apierror(404, "No user found");
     }
 
     return res.status(200).json(new ApiResponse(200, { user }));
+});
+
+const getProfessional = asyncHandler(async (req, res) => {
+    const professionals = await User.find({ role: "professional" }).select("-password -refreshToken");
+    console.log(professionals);
+    return res.status(200).json(new ApiResponse(200, { professionals }));
+});
+
+const RequestToProfessional = asyncHandler(async (req, res) => {
+    const userId = req.user._id; 
+    const { professionType, experience, professionDescription } = req.body;
+    // console.log(professionDescription, professionType, experience);
+    if (!professionType || !experience || !professionDescription ) {
+        return res.status(400).json({ message: "All fields are required." });
+    }
+    // console.log(req.files);
+    const certificateFile = req.files?.['certificate'] ? req.files['certificate'][0] : null;
+    if (!certificateFile|| !certificateFile.path) {
+        throw new apierror(400, "Please upload an avatar");
+    }
+
+    const certificate = await uploadoncloudinary(certificateFile.path);
+    console.log(certificate);
+
+    const user = await User.findByIdAndUpdate(
+        userId,
+        {
+            certificate: certificate.url,
+            professionType,
+            experience,
+            professionDescription,
+            professionStatus: 'pending' 
+        },
+        { new: true }
+    );
+
+    if (!user) {
+        throw new apierror(404, "No user found");
+    }
+
+
+    return res.status(200).json(new ApiResponse(200, { user }));
+});
+
+const getProfessionalRequest = asyncHandler(async (req, res) => {
+    const professionals = await User.find({ role: "citizen", professionStatus: "pending" }).select("-password -refreshToken");
+    console.log(professionals);
+    return res.status(200).json(new ApiResponse(200, { professionals }));
 });
 
 export {
@@ -214,5 +268,8 @@ export {
     logoutuser,
     IsLoggedIn,
     updateuser,
-    changeroletoprofessional
+    changeroletoprofessional,
+    RequestToProfessional,
+    getProfessionalRequest,
+    getProfessional
 }

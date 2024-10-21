@@ -1,0 +1,95 @@
+.chat-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    background-color: #1f2937; /* Dark background */
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+}
+
+.chat-window {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background-color: #111827; /* Slightly lighter dark background */
+    border-bottom: 1px solid #374151; /* Dark grey for borders */
+    border-radius: 12px 12px 0 0;
+}
+
+.chat-message {
+    padding: 2px;
+    margin-bottom: 8px;
+    max-width: 75%;
+    word-wrap: break-word;
+    display: flex; /* Enable flexbox for better alignment */
+    flex-direction: column; /* Stack username and message */
+}
+
+.sent {
+    align-self: flex-end; /* Align sent messages to the right */
+    background-color: #2563eb; /* Vibrant blue for sent messages */
+    color: white;
+    border-radius: 16px 16px 0 16px;
+    margin-left: auto; /* Push sent messages to the right */
+}
+
+.received {
+    align-self: flex-start; /* Align received messages to the left */
+    background-color: #374151; /* Dark grey for received messages */
+    color: #d1d5db; /* Light grey for received text */
+    border-radius: 16px 16px 16px 0;
+    margin-right: auto; /* Push received messages to the left */
+}
+
+.message-user {
+    font-size: 0.9rem;
+    color: #9ca3af; /* Softer grey for usernames */
+}
+
+.message-text {
+    font-size: 1rem;
+    margin: 2px 0;
+    color: #f9fafb; /* Light grey for message text */
+}
+
+.message-time {
+    font-size: 0.75rem;
+    color: #6b7280; /* Muted grey for timestamps */
+    text-align: right;
+}
+
+.chat-input {
+    display: flex;
+    padding: 8px; /* Adjusted padding for smaller input */
+    background-color: #1f2937; /* Dark background for input section */
+    border-radius: 0 0 12px 12px;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 6px; /* Smaller padding */
+    font-size: 0.9rem; /* Smaller font size */
+    border: 1px solid #4b5563; /* Darker border for input */
+    border-radius: 10px; /* Slightly smaller border radius */
+    margin-right: 8px; /* Adjusted margin */
+    outline: none;
+    background-color: #374151; /* Dark grey input background */
+    color: #f9fafb; /* Light grey input text */
+}
+
+.send-button {
+    padding: 8px 16px;
+    background-color: #10b981; 
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.send-button:hover {
+    background-color: #059669; 
+}

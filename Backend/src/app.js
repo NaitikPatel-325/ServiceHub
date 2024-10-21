@@ -7,6 +7,8 @@ import proposalRouter from './routes/proposalRouter.js';
 import taskRouter from './routes/taskRouter.js';
 import authenticateUser from './middleware/auth.js';
 import dotenv from 'dotenv';
+import { WebSocketServer } from 'ws';
+import http from 'http';
 
 dotenv.config();
 
@@ -22,12 +24,32 @@ app.use(express.urlencoded({extended: true, limit: '20kb'}));
 app.use(express.static('public'));
 app.use(cookieparser());
 
-app.use('/user',(req,res,next)=>{
-    // console.log(req.cookies);
-    next()
-},userRouter);
+app.use('/user',userRouter);
 app.use('/issue',authenticateUser,issuseRouter);
 app.use('/proposal',authenticateUser,proposalRouter);
 app.use('/task',authenticateUser,taskRouter);
 
-export default app;
+
+
+const server = http.createServer(app);
+const wss = new WebSocketServer({ server });
+
+wss.on('connection', (ws) => {
+    console.log('New client connected');
+
+    ws.on('message', (message) => {
+        console.log(`Received message: ${message}`);
+
+        wss.clients.forEach(client => {
+            if (client.readyState === client.OPEN) {
+                client.send(message);
+            }
+        });
+    });
+
+    ws.on('close', () => {
+        console.log('Client disconnected');
+    });
+});
+
+export { server, app };

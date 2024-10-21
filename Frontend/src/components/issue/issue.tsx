@@ -6,13 +6,14 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddIssueModal from './AddIssue.tsx';
+import { motion } from 'framer-motion'; // Import motion from framer-motion
 
 interface Issue {
   _id: string;
   title: string;
   description: string;
   location: string;
-  status: 'Reported' | 'In Progress' | 'Resolved' | 'Closed';
+  status: 'Reported' | 'In Progress' | 'Accepted' | 'Closed';
   reporter_id: string;
   createdAt: string;
   updatedAt: string;
@@ -21,13 +22,13 @@ interface Issue {
 const statusColors: { [key: string]: string } = {
   Reported: 'bg-yellow-600',
   'In Progress': 'bg-blue-600',
-  Resolved: 'bg-green-600',
+  Accepted: 'bg-green-600',
   Closed: 'bg-gray-600',
 };
 
 export default function IssueTracker() {
   const user = useSelector((state: any) => state?.user?.user);
-  console.log(user?.role);
+  console.log(user);
   const [searchTerm, setSearchTerm] = useState('');
   const [issues, setIssues] = useState<Issue[]>([]);
   const [selectedStatus, setSelectedStatus] = useState('');
@@ -53,14 +54,12 @@ export default function IssueTracker() {
 
   const handleIssueClick = (issue: Issue) => {
     if (issue.status === 'Reported') {
-
       navigate(
         user?.role === 'goverment'
           ? `/issue/proposal/${issue._id}`
           : `/issue/${issue._id}`
       );
     } else {
-      
       toast.info('This issue is already assigned or closed.');
     }
   };
@@ -78,7 +77,13 @@ export default function IssueTracker() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-8">
+    <motion.div
+      initial={{ opacity: 0, y: -300, scale: 0.4 }} 
+      animate={{ opacity: 1, y: 0, scale: 1 }} 
+      exit={{ opacity: 0, x: -400 }} 
+      transition={{ duration: 1.5, type: 'spring' }} 
+      className="min-h-screen bg-gray-900 text-white p-8"
+    >
       <ToastContainer />
 
       <h1 className="text-4xl font-bold mb-8 text-center">Issue Tracker</h1>
@@ -109,7 +114,7 @@ export default function IssueTracker() {
                 <div
                   key={issue._id}
                   className="block bg-gray-800 rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow focus:ring focus:ring-blue-500 focus:outline-none cursor-pointer"
-                  onClick={() => handleIssueClick(issue)} // Handle issue click based on status
+                  onClick={() => handleIssueClick(issue)} 
                 >
                   <div className="flex-grow">
                     <h3 className="text-xl font-medium text-blue-400 mb-1 cursor-pointer hover:underline">
@@ -118,6 +123,17 @@ export default function IssueTracker() {
                     <p className="text-sm text-gray-300 mb-3">
                       {issue.description}
                     </p>
+
+                    {user?.role === 'goverment' &&  (issue.status === 'In Progress' ) &&  (
+                        <a 
+                          href={`/assignprofessional/${issue._id}`} 
+                          className="px-3 py-1 rounded-full text-xs font-semibold bg-green-600 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200"
+                          aria-label="Assign Professional"
+                        >
+                          Assign Professional
+                        </a>
+                      )}
+
                     <div className="flex items-center space-x-2 mb-2">
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColors[issue.status]}`}
@@ -153,7 +169,7 @@ export default function IssueTracker() {
               <option value="">All Statuses</option>
               <option value="Reported">Reported</option>
               <option value="In Progress">In Progress</option>
-              <option value="Resolved">Resolved</option>
+              <option value="accepted">Accepted</option>
               <option value="Closed">Closed</option>
             </select>
             <ChevronDown className="absolute right-3 top-2.5 h-5 w-5 text-gray-400 pointer-events-none" />
@@ -168,6 +184,6 @@ export default function IssueTracker() {
       </div>
 
       <AddIssueModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </div>
+    </motion.div>
   );
 }

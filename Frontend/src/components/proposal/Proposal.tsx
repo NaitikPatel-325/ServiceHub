@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Input, Textarea, FormControl, FormLabel } from '@chakra-ui/react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 interface AddProposalModalProps {
   isOpen: boolean;
@@ -11,8 +11,7 @@ interface AddProposalModalProps {
 }
 
 const AddProposalModal: React.FC<AddProposalModalProps> = ({ isOpen, onClose, issueId }) => {
-  const user = useSelector((state: any) => state?.user);
-  console.log(user);
+  // const user = useSelector((state: any) => state?.user?.user);
 
   const [proposalDescription, setProposalDescription] = useState('');
   const [costEstimate, setCostEstimate] = useState('');
