@@ -100,10 +100,6 @@ const TaskList: React.FC = () => {
     }
   };
 
-  if (loading) return <div>Loading tasks...</div>;
-  if (error) return <div>{error}</div>;
-  if (!tasks || tasks.length === 0) return <div>No tasks available.</div>;
-
   if (!isAuthenticated || user.role === 'citizen') {
     return (
       <Box
@@ -159,6 +155,10 @@ const TaskList: React.FC = () => {
       </Box>
     );
   }
+
+  if (loading) return <div>Loading tasks...</div>;
+  if (error) return <div>{error}</div>;
+  if (!tasks || tasks.length === 0) return <div>No tasks available.</div>;
 
   return (
     <motion.div
