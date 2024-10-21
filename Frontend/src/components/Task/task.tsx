@@ -27,6 +27,7 @@ interface Task {
   createdAt: string;
   issue_id  : string;
   issue_name: string; 
+  location: string;
 }
 
 
@@ -182,7 +183,7 @@ const TaskList: React.FC = () => {
             <h2 className="text-xl font-semibold mb-2">Description</h2>
             <p className="text-gray-300 mb-4">{task.task_description}</p>
             <h3 className="text-lg font-semibold">Issue Name: {task.issue_name}</h3>
-
+            <h3 className="text-lg font-semibold">Location: {task.location}</h3>
             <h3 className="text-lg font-semibold">Cost: {task.task_cost}</h3>
             <h3 className="text-lg font-semibold">Estimated Days: {task.task_estimate_days}</h3>
             <h3 className={`text-lg font-semibold ${

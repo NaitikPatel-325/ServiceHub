@@ -22,6 +22,7 @@ const getTaskbyProfessionalId = asyncHandler(async (req, res) => {
         return {
           ...task._doc, 
           issue_name: issue ? issue.title : "Issue not found", 
+          location: issue ? issue.location : "Location not found",
         };
       })
     );
