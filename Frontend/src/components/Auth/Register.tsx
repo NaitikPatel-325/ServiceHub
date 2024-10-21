@@ -48,7 +48,7 @@ export default function Register({
   const registerUser = async () => {
     try {
       await axios.post(
-        "http://localhost:3000/user/register",
+        "https://servicehub-k17j.onrender.com/user/register",
         formData,
         {
           headers: {

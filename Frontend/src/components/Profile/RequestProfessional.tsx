@@ -16,7 +16,7 @@ export default function RequestProfessional() {
   useEffect(() => {
     const fetchProfessionalRequests = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/user/getprofessionalrequest", {
+        const response = await axios.get("https://servicehub-k17j.onrender.com/user/getprofessionalrequest", {
           withCredentials: true,
         });
         console.log("Fetched requests:", response.data); 
@@ -45,7 +45,7 @@ export default function RequestProfessional() {
   const handleAccept = async (id: string) => {
     console.log("Accepting request:", id);  
     try {
-      await axios.post(`http://localhost:3000/user/acceptrequest/${id}`, {}, {
+      await axios.post(`https://servicehub-k17j.onrender.com/user/acceptrequest/${id}`, {}, {
         withCredentials: true,
       });
       setRequests((prev) => prev.filter((request) => request.id !== id));
@@ -58,7 +58,7 @@ export default function RequestProfessional() {
 
   const handleReject = async (id: string) => {
     try {
-      await axios.post(`http://localhost:3000/rejectprofessionalrequest/${id}`, {}, {
+      await axios.post(`https://servicehub-k17j.onrender.com/rejectprofessionalrequest/${id}`, {}, {
         withCredentials: true,
       });
       setRequests((prev) => prev.filter((request) => request.id !== id));

@@ -47,7 +47,7 @@ const TaskList: React.FC = () => {
   const fetchTasks = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:3000/task/professional/${user._id}`, {
+      const response = await axios.get(`https://servicehub-k17j.onrender.com/task/professional/${user._id}`, {
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true,
       });
@@ -77,7 +77,7 @@ const TaskList: React.FC = () => {
 
   const handleTaskCompletion = async (taskId: string,issueId:any) => {
     try {
-      await axios.put(`http://localhost:3000/task/changestatus/${taskId}`, { issue_id: issueId,}, {
+      await axios.put(`https://servicehub-k17j.onrender.com/task/changestatus/${taskId}`, { issue_id: issueId,}, {
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true,
       });

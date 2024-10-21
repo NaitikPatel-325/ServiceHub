@@ -64,7 +64,7 @@ export default function Nav({ toggleLogin, isLoggedIn, routes, user }: any) {
 
     const logout = async () => {
       try {
-        const response = await axios.post("http://localhost:3000/user/logout",{}, {
+        const response = await axios.post("https://servicehub-k17j.onrender.com/user/logout",{}, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -88,7 +88,7 @@ export default function Nav({ toggleLogin, isLoggedIn, routes, user }: any) {
   useEffect(() => {
     async function loadUser() {
       try {
-        const res = await axios.get("http://localhost:3000/user/check", {
+        const res = await axios.get("https://servicehub-k17j.onrender.com/user/check", {
           withCredentials: true,
         });
         if (res.data) {

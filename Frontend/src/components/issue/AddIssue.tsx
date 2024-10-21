@@ -48,7 +48,7 @@ const AddIssueModal: React.FC<AddIssueModalProps> = ({ isOpen, onClose }) => {
 
     setLoading(true); // Set loading to true
     try {
-      const res = await axios.post("http://localhost:3000/issue", formData, {
+      const res = await axios.post("https://servicehub-k17j.onrender.com/issue", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
