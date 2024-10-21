@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import './ChatStyle.css'; 
+import { motion } from 'framer-motion';
 
 const WebSocketComponent: React.FC = () => {
     const user = useSelector((state: any) => state?.user?.user);
@@ -70,9 +71,17 @@ const WebSocketComponent: React.FC = () => {
     };
     
     return (
-        <div className="chat-container">
-            <h1>Chat</h1>
-            <div className="chat-window" ref={chatContainerRef}>
+
+        <motion.div
+        initial={{ opacity: 0, y: -300, scale: 0.4 }} 
+        animate={{ opacity: 1, y: 0, scale: 1 }} 
+        exit={{ opacity: 0, x: -300 }} 
+        transition={{ duration: 1.5, type: 'spring' }} 
+        className="max-h-screen bg-gray-900 text-white p-8 w-full"
+      >
+        <div className="chat-container w-full">
+            <h1 className="text-3xl font-bold mb-6 w-full">Chat</h1>
+            <div className="chat-window bg-gray-800 p-6 rounded-lg shadow-lg h-96 overflow-y-auto mb-4 w-full" ref={chatContainerRef}>
                 {messages.map((msg, index) => (
                     <div key={index} className={`chat-message ${msg.user === 'You' ? 'sent' : 'received'}`}>
                         <div className="message-user">
@@ -83,7 +92,7 @@ const WebSocketComponent: React.FC = () => {
                     </div>
                 ))}
             </div>
-            <div className="chat-input">
+            <div className="chat-input flex">
                 <input
                     type="text"
                     value={input}
@@ -95,7 +104,9 @@ const WebSocketComponent: React.FC = () => {
                 <button className="send-button" onClick={sendMessage}>Send</button>
             </div>
         </div>
+        </motion.div>
     );
+    
 };
 
 export default WebSocketComponent;

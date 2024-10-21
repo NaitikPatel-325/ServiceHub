@@ -6,7 +6,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddIssueModal from './AddIssue.tsx';
-import { motion } from 'framer-motion'; // Import motion from framer-motion
+import { motion } from 'framer-motion'; 
 
 interface Issue {
   _id: string;
@@ -82,7 +82,7 @@ export default function IssueTracker() {
       animate={{ opacity: 1, y: 0, scale: 1 }} 
       exit={{ opacity: 0, x: -400 }} 
       transition={{ duration: 1.5, type: 'spring' }} 
-      className="min-h-screen bg-gray-900 text-white p-8"
+      className="min-h-screen bg-gray-900 text-white p-8 w-full"
     >
       <ToastContainer />
 

@@ -16,6 +16,7 @@ import {
 import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { navigate } from "raviger";
 
 interface RegisterProps {
   isOpen: boolean;
@@ -61,6 +62,8 @@ export default function Register({
       console.log(err);
       toast.error("Error in registration");
     }
+
+    navigate("/");
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -86,7 +86,7 @@ const TaskList: React.FC = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 50 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen bg-gray-900 text-white p-8"
+      className="min-h-screen bg-gray-900 text-white p-8 w-full"
     >
       <h1 className="text-4xl font-bold mb-8 text-center">Task List</h1>
 
