@@ -70,16 +70,15 @@ const WebSocketComponent: React.FC = () => {
         }
     };
     
-    return (
-
+    return  (
         <motion.div
-        initial={{ opacity: 0, y: -300, scale: 0.4 }} 
-        animate={{ opacity: 1, y: 0, scale: 1 }} 
-        exit={{ opacity: 0, x: -300 }} 
-        transition={{ duration: 1.5, type: 'spring' }} 
-        className="max-h-screen bg-gray-900 text-white p-8 w-full"
-      >
-        <div className="chat-container w-full">
+            initial={{ opacity: 0, y: -100, scale: 0.7 }} 
+            animate={{ opacity: 1, y: 0, scale: 1 }} 
+            exit={{ opacity: 0, y: 100 }} 
+            transition={{ duration: 1, type: 'spring', stiffness: 80 }}
+            className="max-h-screen bg-gray-900 text-white p-8 w-full"
+        >
+            <div className="chat-container w-full">
             <h1 className="text-3xl font-bold mb-6 w-full">Chat</h1>
             <div className="chat-window bg-gray-800 p-6 rounded-lg shadow-lg h-96 overflow-y-auto mb-4 w-full" ref={chatContainerRef}>
                 {messages.map((msg, index) => (

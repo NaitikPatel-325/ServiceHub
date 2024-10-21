@@ -13,7 +13,7 @@ interface Issue {
   title: string;
   description: string;
   location: string;
-  status: 'Reported' | 'In Progress' | 'Accepted' | 'Closed';
+  status: 'Reported' | 'In Progress' | 'Accepted' | 'Resolved';
   reporter_id: string;
   createdAt: string;
   updatedAt: string;
@@ -23,7 +23,7 @@ const statusColors: { [key: string]: string } = {
   Reported: 'bg-yellow-600',
   'In Progress': 'bg-blue-600',
   Accepted: 'bg-green-600',
-  Closed: 'bg-gray-600',
+  Resolved: 'bg-gray-600',
 };
 
 export default function IssueTracker() {
@@ -75,6 +75,7 @@ export default function IssueTracker() {
       );
     }
   });
+  
 
   return (
     <motion.div
@@ -169,11 +170,12 @@ export default function IssueTracker() {
               <option value="">All Statuses</option>
               <option value="Reported">Reported</option>
               <option value="In Progress">In Progress</option>
-              <option value="accepted">Accepted</option>
-              <option value="Closed">Closed</option>
+              <option value="Accepted">Accepted</option>
+              <option value="Resolved">Resolved</option>
             </select>
             <ChevronDown className="absolute right-3 top-2.5 h-5 w-5 text-gray-400 pointer-events-none" />
           </div>
+
           <button
             className="w-full bg-blue-600 text-white rounded-md py-3 px-4 font-semibold hover:bg-blue-500 shadow-md transition-all"
             onClick={() => setIsModalOpen(true)}

@@ -4,33 +4,54 @@ import asyncHandler from "../utils/asyncHandler.js";
 import {Task} from "../models/task.js";
 import {Issue} from "../models/issue.js";
 import {Proposal} from "../models/proposal.js";
-import mongoose from "mongoose";
 
 
 const getTaskbyProfessionalId = asyncHandler(async (req, res) => {
     const { id } = req.params;
-
+  
     console.log(id);
-    // const obj = new mongoose.Types.ObjectId(id);
-    const task = await Task.find({ assigned_to: id });
-    
-    if (!task || task.length === 0) {
+    const tasks = await Task.find({ assigned_to: id });
+  
+    if (!tasks || tasks.length === 0) {
       throw new apierror(404, "No task found");
     }
   
-    console.log(task);
-
-    return res.status(200).json(new ApiResponse(200, { task }));
-});
+    const tasksWithIssueDetails = await Promise.all(
+      tasks.map(async (task) => {
+        const issue = await Issue.findById(task.issue_id); 
+        return {
+          ...task._doc, 
+          issue_name: issue ? issue.title : "Issue not found", 
+        };
+      })
+    );
+  
+    console.log(tasksWithIssueDetails);
+  
+    return res.status(200).json(new ApiResponse(200, { tasks: tasksWithIssueDetails }));
+  });
+  
 
 const changestatus = asyncHandler(async (req, res) => {
     const { id } = req.params;
+    const { issue_id } = req.body;  
 
     const task = await Task.findByIdAndUpdate(
         id,
         { status: 'Completed' },
         { new: true }
     );
+
+    const updatedIssue = await Issue.findByIdAndUpdate(
+        issue_id,
+        { status: 'Resolved' },
+        { new: true }
+    );
+
+    if (!updatedIssue) {
+        throw new apierror(500, "Error in updating issue status");
+    }
+
 
     if (!task) {
 
@@ -128,7 +149,7 @@ const assignProfessional = asyncHandler(async (req, res) => {
 
     const updatedIssue = await Issue.findByIdAndUpdate(
         issueId,
-        { status: 'accepted' },
+        { status: 'Accepted' },
         { new: true }
     );
 

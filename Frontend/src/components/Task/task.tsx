@@ -11,7 +11,10 @@ interface Task {
   task_estimate_days: number;
   status: 'Pending' | 'In Progress' | 'Completed';
   createdAt: string;
+  issue_id  : string;
+  issue_name: string; 
 }
+
 
 const TaskList: React.FC = () => {
   const user = useSelector((state: any) => state?.user?.user);
@@ -27,7 +30,7 @@ const TaskList: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true,
       });
-      setTasks(response.data.data.task || []);
+      setTasks(response.data.data.tasks || []);
       console.log("Tasks fetched successfully:", response.data);
     } catch (err) {
       console.error('Error fetching tasks:', err);
@@ -51,9 +54,9 @@ const TaskList: React.FC = () => {
     fetchTasks();
   }, [user, toast]);
 
-  const handleTaskCompletion = async (taskId: string) => {
+  const handleTaskCompletion = async (taskId: string,issueId:any) => {
     try {
-      await axios.put(`http://localhost:3000/task/changestatus/${taskId}`, {}, {
+      await axios.put(`http://localhost:3000/task/changestatus/${taskId}`, { issue_id: issueId,}, {
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true,
       });
@@ -102,6 +105,7 @@ const TaskList: React.FC = () => {
           >
             <h2 className="text-xl font-semibold mb-2">Description</h2>
             <p className="text-gray-300 mb-4">{task.task_description}</p>
+            <h3 className="text-lg font-semibold">Issue Name: {task.issue_name}</h3>
 
             <h3 className="text-lg font-semibold">Cost: {task.task_cost}</h3>
             <h3 className="text-lg font-semibold">Estimated Days: {task.task_estimate_days}</h3>
@@ -113,7 +117,7 @@ const TaskList: React.FC = () => {
             </h3>
 
             <button
-              onClick={() => handleTaskCompletion(task._id)}
+              onClick={() => handleTaskCompletion(task._id, task?.issue_id)}
               className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
               disabled={task.status === 'Completed'}
             >
