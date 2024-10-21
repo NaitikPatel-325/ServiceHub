@@ -40,7 +40,7 @@ function App() {
   const routes = [
     {
       path: "/",
-      name : "Home",
+      name : "home",
     },
     {
       path:"/issues",
