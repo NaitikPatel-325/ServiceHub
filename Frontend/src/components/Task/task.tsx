@@ -3,6 +3,20 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useToast } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
+import {
+  Box,
+  VStack,
+  Heading,
+  Text,
+  Button,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import { WarningTwoIcon } from '@chakra-ui/icons';
+
 
 interface Task {
   _id: string;
@@ -15,10 +29,16 @@ interface Task {
 
 const TaskList: React.FC = () => {
   const user = useSelector((state: any) => state?.user?.user);
+  const isAuthenticated = useSelector((state: any) => state?.user?.isAuthenticated);
+  console.log("Is Authenticated:", isAuthenticated);
+
+  const textColor = 'black';
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
+  const bgColor = useColorModeValue('gray.50', 'gray.800');
+  const cardBgColor = useColorModeValue('white', 'gray.700');
 
   const fetchTasks = async () => {
     try {
@@ -79,6 +99,62 @@ const TaskList: React.FC = () => {
   if (loading) return <div>Loading tasks...</div>;
   if (error) return <div>{error}</div>;
   if (!tasks || tasks.length === 0) return <div>No tasks available.</div>;
+
+  if (!isAuthenticated || user.role === 'citizen') {
+    return (
+      <Box
+        minHeight="100vh"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        bg={bgColor}
+      >
+        <Box
+          maxWidth="md"
+          width="full"
+          borderRadius="xl"
+          p={10}
+          boxShadow="xl"
+          bg={cardBgColor}
+        >
+          <VStack spacing={8}>
+            <WarningTwoIcon boxSize="16" color="red.500" />
+            <Heading size="xl" textAlign="center" color={textColor}>
+              Access Denied
+            </Heading>
+            <Text fontSize="lg" textAlign="center" color={textColor}>
+              Only professionals can view this page
+            </Text>
+            <Alert
+              status="error"
+              variant="subtle"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              textAlign="center"
+              borderRadius="md"
+            >
+              <AlertIcon boxSize="6" mr={0} />
+              <AlertTitle mt={4} mb={1} fontSize="lg" color={textColor}>
+                Unauthorized Access
+              </AlertTitle>
+              <AlertDescription maxWidth="sm" color={textColor}>
+                You don't have the required permissions to access this area.
+                If you believe this is an error, please contact support.
+              </AlertDescription>
+            </Alert>
+            <Button
+              colorScheme="blue"
+              width="full"
+              onClick={() => window.history.back()}
+            >
+              Go Back
+            </Button>
+          </VStack>
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <motion.div
